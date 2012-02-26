@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, UTMUmrechnerActivity!</string>
+    <string name="app_name">Vitamin B5</string>
+    <string name="utm_coordinates">UTM Koordinaten</string>
+    <string name="precision">Präzision in Metern</string>
+    <string name="use_current_position">Aktuelle Position benutzen</string>
+    <string name="latitude">Breite</string>
+    <string name="longtitude">Länge</string>
+    <string name="utm_coordinate_1">UTM Koordinate 1</string>
+    <string name="utm_coordinate_2">UTM Koordinate 2</string>
+    <string name="distance">Distanz</string>
+
+</resources>
