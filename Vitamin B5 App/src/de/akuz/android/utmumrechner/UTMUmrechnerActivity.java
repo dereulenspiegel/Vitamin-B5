@@ -1,5 +1,6 @@
 package de.akuz.android.utmumrechner;
 
+import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
 import uk.me.jstott.jcoord.LatLng;
 import uk.me.jstott.jcoord.MGRSRef;
 import uk.me.jstott.jcoord.UTMRef;
@@ -19,11 +20,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
-public class UTMUmrechnerActivity extends Activity implements OnKeyListener,
+public class UTMUmrechnerActivity extends MyAbstractActivity implements OnKeyListener,
 		OnCheckedChangeListener, LocationListener {
 
 	private EditText editUTM;
-	private EditText editPrecision;
 	private EditText editLatitude;
 	private EditText editLongitude;
 	private CheckBox useCurrentPosition;
@@ -51,14 +51,12 @@ public class UTMUmrechnerActivity extends Activity implements OnKeyListener,
 		editLatitude = (EditText) findViewById(R.id.editTextLatitude);
 		editLongitude = (EditText) findViewById(R.id.editTextLongtitude);
 		editUTM = (EditText) findViewById(R.id.editTextUTMCoordinates);
-		editPrecision = (EditText) findViewById(R.id.editTextPrecision);
 		useCurrentPosition = (CheckBox) findViewById(R.id.checkBoxUseCurrentPosition);
 
 		editLatitude.setOnKeyListener(this);
 		editLongitude.setOnKeyListener(this);
 		editUTM.setOnKeyListener(this);
-		editPrecision.setOnKeyListener(this);
-
+		
 		useCurrentPosition.setOnCheckedChangeListener(this);
 	}
 

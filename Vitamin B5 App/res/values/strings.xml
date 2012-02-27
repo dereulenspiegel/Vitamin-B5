@@ -11,5 +11,7 @@
     <string name="utm_coordinate_1">UTM Koordinate 1</string>
     <string name="utm_coordinate_2">UTM Koordinate 2</string>
     <string name="distance">Distanz</string>
+    <string name="action_menu_convert">Umrechnen</string>
+    <string name="action_menu_distance">Distanz</string>
 
 </resources>

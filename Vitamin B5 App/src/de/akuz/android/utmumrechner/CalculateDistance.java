@@ -2,6 +2,8 @@ package de.akuz.android.utmumrechner;
 
 import java.text.DecimalFormat;
 
+import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
+
 import uk.me.jstott.jcoord.MGRSRef;
 import uk.me.jstott.jcoord.datum.WGS84Datum;
 import android.app.Activity;
@@ -12,7 +14,7 @@ import android.view.View.OnKeyListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class CalculateDistance extends Activity implements OnKeyListener {
+public class CalculateDistance extends MyAbstractActivity implements OnKeyListener {
 
 	private EditText editUtm1;
 	private EditText editUtm2;
