@@ -112,6 +112,8 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		if (averageLatitude != 0 && averageLongitude != 0) {
 			textViewCurrentPosition.setText(CoordinateUtils.latLonToMGRS(
 					averageLatitude, averageLongitude));
+		} else {
+			textViewCurrentPosition.setText("");
 		}
 	}
 
