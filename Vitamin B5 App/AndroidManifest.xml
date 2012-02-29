@@ -11,18 +11,19 @@
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" android:theme="@android:style/Theme.Holo.Light">
+        android:label="@string/app_name" android:theme="@style/B5Theme">
         <activity
-            android:name=".UTMUmrechnerActivity"
-            android:label="@string/app_name" >
+            android:name=".UTMUmrechnerActivity">
         </activity>
         <activity android:name="CalculateDistance"></activity>
-        <activity android:name="Center">
+        <activity android:name="Center" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="ListTargetLocations"></activity>
+        <activity android:name="AddLocationActivity"></activity>
     </application>
 
 </manifest>

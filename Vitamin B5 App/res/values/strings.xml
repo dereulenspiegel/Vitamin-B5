@@ -4,7 +4,7 @@
     <string name="hello">Hello World, UTMUmrechnerActivity!</string>
     <string name="app_name">Vitamin B5</string>
     <string name="utm_coordinates">UTM Koordinaten</string>
-    <string name="precision">Präzision in Metern</string>
+    <string name="precision">Genauigkeit</string>
     <string name="use_current_position">Aktuelle Position benutzen</string>
     <string name="latitude">Breite</string>
     <string name="longtitude">Länge</string>
@@ -13,5 +13,14 @@
     <string name="distance">Distanz</string>
     <string name="action_menu_convert">Umrechnen</string>
     <string name="action_menu_distance">Distanz</string>
+    <string name="name">Name</string>
+    <string name="utm">UTM</string>
+    <string name="list_locations">Orte anzeigen</string>
+    <string name="current_position">Aktuelle Position</string>
+    <string name="satellite_count">Anzahl Satelliten</string>
+    <string name="add_location">Ort hinzufügen</string>
+    <string name="take_picture">Foto aufnehmen</string>
+    <string name="save">Speichern</string>
+    <string name="description">Beschreibung</string>
 
 </resources>

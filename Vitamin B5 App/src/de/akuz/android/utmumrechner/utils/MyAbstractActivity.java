@@ -1,6 +1,8 @@
 package de.akuz.android.utmumrechner.utils;
 
+import de.akuz.android.utmumrechner.AddLocationActivity;
 import de.akuz.android.utmumrechner.CalculateDistance;
+import de.akuz.android.utmumrechner.ListTargetLocations;
 import de.akuz.android.utmumrechner.R;
 import de.akuz.android.utmumrechner.UTMUmrechnerActivity;
 import android.app.Activity;
@@ -28,6 +30,11 @@ public class MyAbstractActivity extends Activity {
 		case R.id.action_menu_distance:
 			startMyActivity(CalculateDistance.class);
 			return true;
+		case R.id.action_menu_list_locations:
+			startMyActivity(ListTargetLocations.class);
+			return true;
+		case R.id.action_menu_add_location:
+			startMyActivity(AddLocationActivity.class);
 		}
 		
 		return false;
