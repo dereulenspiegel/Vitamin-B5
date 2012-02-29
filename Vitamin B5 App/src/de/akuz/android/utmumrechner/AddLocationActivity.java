@@ -15,10 +15,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.akuz.android.utmumrechner.data.LocationDatabase;
 import de.akuz.android.utmumrechner.data.TargetLocation;
 import de.akuz.android.utmumrechner.utils.CoordinateUtils;
 import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
+import de.akuz.android.utmumrechner.utils.StringUtils;
 
 public class AddLocationActivity extends MyAbstractActivity implements
 		LocationListener, GpsStatus.Listener, OnClickListener {
@@ -32,19 +34,19 @@ public class AddLocationActivity extends MyAbstractActivity implements
 	private double averageLongitude = 0;
 	private double averageLatitude = 0;
 	private double averagePrecision = 0;
-	
+
 	private int currentSatelliteCount = 0;
-	
+
 	private TextView textViewCurrentPosition;
 	private TextView textViewSatelliteCount;
 	private TextView textViewPrecision;
-	
+
 	private EditText editTextName;
 	private EditText editTextDescription;
-	
+
 	private Button buttonSave;
 	private Button buttonTakePicture;
-	
+
 	private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.000");
 
 	@Override
@@ -58,20 +60,20 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		textViewCurrentPosition.setText("");
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		enableUseOfCurrentPosition();
-		
+
 	}
-	
-	private void initUiElements(){
-		textViewCurrentPosition = (TextView)findViewById(R.id.textViewCurrentPosition);
-		textViewPrecision = (TextView)findViewById(R.id.textViewPrecision);
-		textViewSatelliteCount = (TextView)findViewById(R.id.textViewSatelliteCount);
-		
-		editTextDescription = (EditText)findViewById(R.id.editTextDescription);
-		editTextName = (EditText)findViewById(R.id.editTextName);
-		
-		buttonSave = (Button)findViewById(R.id.buttonSave);
+
+	private void initUiElements() {
+		textViewCurrentPosition = (TextView) findViewById(R.id.textViewCurrentPosition);
+		textViewPrecision = (TextView) findViewById(R.id.textViewPrecision);
+		textViewSatelliteCount = (TextView) findViewById(R.id.textViewSatelliteCount);
+
+		editTextDescription = (EditText) findViewById(R.id.editTextDescription);
+		editTextName = (EditText) findViewById(R.id.editTextName);
+
+		buttonSave = (Button) findViewById(R.id.buttonSave);
 		buttonSave.setOnClickListener(this);
-		buttonTakePicture = (Button)findViewById(R.id.buttonTakePicture);
+		buttonTakePicture = (Button) findViewById(R.id.buttonTakePicture);
 		buttonTakePicture.setOnClickListener(this);
 	}
 
@@ -84,30 +86,31 @@ public class AddLocationActivity extends MyAbstractActivity implements
 	@Override
 	public void onLocationChanged(Location location) {
 		locations.add(location);
-		if(averageLatitude == 0){
+		if (averageLatitude == 0) {
 			averageLatitude = location.getLatitude();
 		} else {
-			averageLatitude = ((averageLatitude + location.getLatitude())/2);
+			averageLatitude = ((averageLatitude + location.getLatitude()) / 2);
 		}
-		
-		if(averageLongitude == 0){
+
+		if (averageLongitude == 0) {
 			averageLongitude = location.getLongitude();
 		} else {
-			averageLongitude = ((averageLongitude + location.getLongitude())/2);
+			averageLongitude = ((averageLongitude + location.getLongitude()) / 2);
 		}
-		
-		if(averagePrecision == 0){
+
+		if (averagePrecision == 0) {
 			averagePrecision = location.getAccuracy();
 		} else {
-			averagePrecision = ((averagePrecision + location.getAccuracy())/2);
+			averagePrecision = ((averagePrecision + location.getAccuracy()) / 2);
 		}
 		updateFields();
 	}
-	
-	private void updateFields(){
-		textViewPrecision.setText(decimalFormat.format(averagePrecision)+"m");
+
+	private void updateFields() {
+		textViewPrecision.setText(decimalFormat.format(averagePrecision) + "m");
 		textViewSatelliteCount.setText(String.valueOf(currentSatelliteCount));
-		textViewCurrentPosition.setText(CoordinateUtils.latLonToMGRS(averageLatitude, averageLongitude));
+		textViewCurrentPosition.setText(CoordinateUtils.latLonToMGRS(
+				averageLatitude, averageLongitude));
 	}
 
 	@Override
@@ -155,19 +158,26 @@ public class AddLocationActivity extends MyAbstractActivity implements
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
-		if(id == buttonSave.getId()){
+		if (id == buttonSave.getId()) {
 			save();
 		}
-		if(id == buttonTakePicture.getId()){
-			//TODO: take a picture and get the picture url
+		if (id == buttonTakePicture.getId()) {
+			// TODO: take a picture and get the picture url
 		}
 	}
-	
-	private void save(){
+
+	private void save() {
 		TargetLocation location;
 		String description = editTextDescription.getText().toString();
 		String coordinates = textViewCurrentPosition.getText().toString();
 		String name = editTextName.getText().toString();
+		if (StringUtils.isEmtpy(description)
+				|| StringUtils.isEmtpy(coordinates)
+				|| StringUtils.isEmtpy(name)) {
+			Toast.makeText(this, R.string.error_please_provide_all_info,
+					Toast.LENGTH_LONG).show();
+			return;
+		}
 		db.open();
 		location = db.createTargetLocation(name, coordinates, description);
 		db.close();

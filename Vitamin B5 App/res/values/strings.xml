@@ -22,5 +22,6 @@
     <string name="take_picture">Foto aufnehmen</string>
     <string name="save">Speichern</string>
     <string name="description">Beschreibung</string>
+    <string name="error_please_provide_all_info">Bitte fülle alle Felder aus</string>
 
 </resources>
