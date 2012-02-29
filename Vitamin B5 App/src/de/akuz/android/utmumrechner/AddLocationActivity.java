@@ -57,7 +57,7 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		setContentView(R.layout.add_location);
 		initUiElements();
 		updateFields();
-		textViewCurrentPosition.setText("");
+		clearFieldsAndResetAverages();
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		enableUseOfCurrentPosition();
 
@@ -181,6 +181,16 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		db.open();
 		location = db.createTargetLocation(name, coordinates, description);
 		db.close();
+		clearFieldsAndResetAverages();
+	}
+	
+	private void clearFieldsAndResetAverages(){
+		locations.clear();
+		averageLatitude = 0;
+		averageLongitude = 0;
+		averagePrecision = 0;
+		editTextDescription.setText("");
+		editTextName.setText("");
 	}
 
 }
