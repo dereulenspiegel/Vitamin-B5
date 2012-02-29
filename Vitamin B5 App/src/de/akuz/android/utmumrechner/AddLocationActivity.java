@@ -109,8 +109,10 @@ public class AddLocationActivity extends MyAbstractActivity implements
 	private void updateFields() {
 		textViewPrecision.setText(decimalFormat.format(averagePrecision) + "m");
 		textViewSatelliteCount.setText(String.valueOf(currentSatelliteCount));
-		textViewCurrentPosition.setText(CoordinateUtils.latLonToMGRS(
-				averageLatitude, averageLongitude));
+		if (averageLatitude != 0 && averageLongitude != 0) {
+			textViewCurrentPosition.setText(CoordinateUtils.latLonToMGRS(
+					averageLatitude, averageLongitude));
+		}
 	}
 
 	@Override
@@ -183,8 +185,8 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		db.close();
 		clearFieldsAndResetAverages();
 	}
-	
-	private void clearFieldsAndResetAverages(){
+
+	private void clearFieldsAndResetAverages() {
 		locations.clear();
 		averageLatitude = 0;
 		averageLongitude = 0;
