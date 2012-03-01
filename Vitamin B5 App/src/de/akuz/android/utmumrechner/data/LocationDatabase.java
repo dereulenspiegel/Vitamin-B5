@@ -124,5 +124,16 @@ public class LocationDatabase {
 		long id = location.getId();
 		db.delete(LOCATIONS_TABLE_NAME, LOCATIONS_ID + " = " + id, null);
 	}
+	
+	public void updateTargetLocation(TargetLocation location){
+		if(getLocationById(location.getId())!=null){
+			ContentValues values = new ContentValues();
+			values.put(LOCATIONS_COORDINATES, location.getMgrsCoordinate());
+			values.put(LOCATIONS_DESCRIPTION, location.getDescription());
+			values.put(LOCATIONS_NAME, location.getName());
+			values.put(LOCATIONS_PICTURE, location.getPictureUrl());
+			db.update(LOCATIONS_TABLE_NAME, values, LOCATIONS_ID+"=?", new String[]{String.valueOf(location.getId())});
+		}
+	}
 
 }

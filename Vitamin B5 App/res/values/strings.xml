@@ -23,5 +23,6 @@
     <string name="save">Speichern</string>
     <string name="description">Beschreibung</string>
     <string name="error_please_provide_all_info">Bitte fülle alle Felder aus</string>
+    <string name="error_coordinate_required">Zum Aufnehmen eines Ortes muss der Ort bestimmt werden</string>
 
 </resources>

@@ -1,15 +1,24 @@
 package de.akuz.android.utmumrechner;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.GpsStatus;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -49,10 +58,16 @@ public class AddLocationActivity extends MyAbstractActivity implements
 
 	private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.000");
 
+	private File externalStorage;
+
+	private File currentImage;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		db = new LocationDatabase(this);
+		externalStorage = new File(Environment.getExternalStorageDirectory(),
+				this.getPackageName());
 		locations = new LinkedList<Location>();
 		setContentView(R.layout.add_location);
 		initUiElements();
@@ -166,7 +181,7 @@ public class AddLocationActivity extends MyAbstractActivity implements
 			save();
 		}
 		if (id == buttonTakePicture.getId()) {
-			// TODO: take a picture and get the picture url
+			takePicture();
 		}
 	}
 
@@ -184,6 +199,10 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		}
 		db.open();
 		location = db.createTargetLocation(name, coordinates, description);
+		if (currentImage != null) {
+			location.setPictureUrl(currentImage.getAbsolutePath());
+			db.updateTargetLocation(location);
+		}
 		db.close();
 		clearFieldsAndResetAverages();
 	}
@@ -195,6 +214,54 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		averagePrecision = 0;
 		editTextDescription.setText("");
 		editTextName.setText("");
+	}
+
+	private void takePicture() {
+		if (StringUtils.isEmtpy(textViewCurrentPosition.getText().toString())) {
+			Toast.makeText(this, R.string.error_coordinate_required,
+					Toast.LENGTH_LONG);
+			return;
+		}
+		Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+		i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getImageFile()));
+		startActivityForResult(i, 0);
+	}
+
+	private File getImageFile() {
+		if (!externalStorage.exists()) {
+			externalStorage.mkdirs();
+		}
+		String coordinates = textViewCurrentPosition.getText().toString();
+		try {
+			File imagePath = new File(externalStorage, "images");
+			if (!imagePath.exists()) {
+				imagePath.mkdirs();
+			}
+			imagePath = new File(imagePath, StringUtils.hashSha1(coordinates));
+			currentImage = imagePath;
+			return imagePath;
+		} catch (NoSuchAlgorithmException e) {
+			Log.e("UTM", "Error while hashing", e);
+		} catch (UnsupportedEncodingException e) {
+			Log.e("UTM", "Error while hashing", e);
+		}
+		return null;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("UTM", "Received result for Camera action. ResultCode "
+				+ resultCode);
+		if (resultCode == Activity.RESULT_OK && requestCode == 0) {
+			Log.d("UTM", "image intent: " + data.toString());
+			for (String s : data.getExtras().keySet()) {
+				Log.d("UTM", "Key: " + s + " Value:"
+						+ data.getExtras().getString(s));
+			}
+		} else if (requestCode == 0) {
+			currentImage = null;
+		}
 	}
 
 }
