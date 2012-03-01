@@ -72,7 +72,6 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		locations = new LinkedList<Location>();
 		setContentView(R.layout.add_location);
 		initUiElements();
-		updateFields();
 		clearFieldsAndResetAverages();
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		enableUseOfCurrentPosition();
@@ -250,7 +249,7 @@ public class AddLocationActivity extends MyAbstractActivity implements
 			if (!imagePath.exists()) {
 				imagePath.mkdirs();
 			}
-			imagePath = new File(imagePath, StringUtils.hashSha1(coordinates));
+			imagePath = new File(imagePath, StringUtils.hashSha1(coordinates)+".jpg");
 			currentImage = imagePath;
 			return imagePath;
 		} catch (NoSuchAlgorithmException e) {
@@ -267,11 +266,9 @@ public class AddLocationActivity extends MyAbstractActivity implements
 				+ resultCode);
 		if (resultCode == Activity.RESULT_OK && requestCode == 0) {
 			Log.d("UTM", "image intent: " + data.toString());
-			for (String s : data.getExtras().keySet()) {
-				Log.d("UTM", "Key: " + s + " Value:"
-						+ data.getExtras().getString(s));
-			}
+			
 		} else if (requestCode == 0) {
+			Log.d("UTM","Received no success, setting image to null");
 			currentImage = null;
 		}
 	}

@@ -53,6 +53,7 @@ public class LocationListFragment extends MyAbstractFragment implements OnClickL
 	private LocationDatabase db;
 	
 	private Button buttonAddLocation;
+	private Button buttonDelete;
 	private ListView listView;
 	private ListAdapter adapter;
 	
@@ -70,6 +71,8 @@ public class LocationListFragment extends MyAbstractFragment implements OnClickL
 	protected void initUIElements(){
 		buttonAddLocation = (Button)findViewById(R.id.buttonAddLocation);
 		buttonAddLocation.setOnClickListener(this);
+		buttonDelete = (Button)findViewById(R.id.buttonDelete);
+		buttonDelete.setOnClickListener(this);
 		listView = (ListView)findViewById(R.id.listViewLoactions);
 		db.open();
 		adapter = new LocationListAdapter(this.getActivity(), 0, 0, db.getAllLocations());
@@ -83,6 +86,8 @@ public class LocationListFragment extends MyAbstractFragment implements OnClickL
 		if(v.getId() == buttonAddLocation.getId()){
 			Intent i = new Intent(this.getActivity(),AddLocationActivity.class);
 			startActivity(i);
+		} else if(v.getId() == buttonDelete.getId()){
+			deleteSelectedLocations();
 		}
 		
 	}
@@ -109,6 +114,23 @@ public class LocationListFragment extends MyAbstractFragment implements OnClickL
 	
 	public ListAdapter getListAdapter(){
 		return adapter;
+	}
+	
+	private void deleteSelectedLocations(){
+		List<TargetLocation> locations = new ArrayList<TargetLocation>(adapter.getCount());
+		for(int i=0; i<adapter.getCount();i++){
+			TargetLocation tempLocation = (TargetLocation) adapter.getItem(i);
+			if(tempLocation.isSelected()){
+				locations.add(tempLocation);
+			}
+		}
+		db.open();
+		for(TargetLocation t : locations){
+			db.deleteLocation(t);
+		}
+		adapter = new LocationListAdapter(this.getActivity(),-1, -1, db.getAllLocations());
+		db.close();
+		listView.setAdapter(adapter);
 	}
 
 }

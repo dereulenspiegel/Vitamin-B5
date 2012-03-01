@@ -7,6 +7,7 @@ public class TargetLocation {
 	private String pictureUrl;
 	private String name;
 	private long id;
+	private boolean isSelected;
 
 	public String getMgrsCoordinate() {
 		return mgrsCoordinate;
@@ -46,6 +47,14 @@ public class TargetLocation {
 
 	void setId(long id) {
 		this.id = id;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 
 }

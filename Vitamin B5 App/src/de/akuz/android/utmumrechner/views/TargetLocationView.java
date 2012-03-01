@@ -7,11 +7,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class TargetLocationView extends LinearLayout {
+public class TargetLocationView extends LinearLayout implements OnCheckedChangeListener{
 	
 	private Context mContext;
 	
@@ -19,6 +21,7 @@ public class TargetLocationView extends LinearLayout {
 	private TextView textViewName;
 	
 	private CheckBox checkBox;
+	private TargetLocation currentLocation;
 
 	public TargetLocationView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -43,6 +46,7 @@ public class TargetLocationView extends LinearLayout {
 		textViewUTM = (TextView)baseLayout.findViewById(R.id.textViewUTM);
 		textViewName = (TextView)baseLayout.findViewById(R.id.textViewName);
 		checkBox = (CheckBox)baseLayout.findViewById(R.id.checkBox);
+		checkBox.setOnCheckedChangeListener(this);
 	}
 	
 	public void setName(String name){
@@ -54,12 +58,18 @@ public class TargetLocationView extends LinearLayout {
 	}
 	
 	public void bindTargetLocation(TargetLocation location){
+		currentLocation = location;
 		setName(location.getName());
 		setUTM(location.getMgrsCoordinate());
 	}
 	
 	public boolean isChecked(){
 		return checkBox.isChecked();
+	}
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		currentLocation.setSelected(isChecked);	
 	}
 
 }
