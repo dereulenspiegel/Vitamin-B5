@@ -48,6 +48,7 @@ public class LocationListFragment extends MyAbstractFragment implements OnClickL
 	
 	public interface Callback{
 		public void itemSelected(long id);
+		public void itemDeleted(long id);
 	}
 	
 	private LocationDatabase db;
@@ -127,6 +128,9 @@ public class LocationListFragment extends MyAbstractFragment implements OnClickL
 		db.open();
 		for(TargetLocation t : locations){
 			db.deleteLocation(t);
+			for(Callback c : callbacks){
+				c.itemDeleted(t.getId());
+			}
 		}
 		adapter = new LocationListAdapter(this.getActivity(),-1, -1, db.getAllLocations());
 		db.close();

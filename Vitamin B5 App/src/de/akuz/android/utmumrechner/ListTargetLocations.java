@@ -13,6 +13,8 @@ public class ListTargetLocations extends MyAbstractActivity implements LocationL
 	private LocationListFragment locationListFragment;
 	private LocationDetailFragment locationDetailFragment;
 	
+	private long currentShownId;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -30,18 +32,28 @@ public class ListTargetLocations extends MyAbstractActivity implements LocationL
 		ListAdapter adapter = locationListFragment.getListAdapter();
 		if(adapter.getCount() > 0 && locationDetailFragment != null){
 			TargetLocation firstLocation = (TargetLocation) adapter.getItem(0);
+			currentShownId = firstLocation.getId();
 			locationDetailFragment.updateContent(firstLocation.getId());
 		}
 	}
 
 	@Override
 	public void itemSelected(long id) {
+		currentShownId = id;
 		if(locationDetailFragment == null){
 			Intent i = new Intent(this,LocationDetailActivity.class);
 			i.putExtra("id", id);
 			startActivity(i);
 		} else {
 			locationDetailFragment.updateContent(id);
+		}
+		
+	}
+
+	@Override
+	public void itemDeleted(long id) {
+		if(id == currentShownId && locationDetailFragment != null){
+			locationDetailFragment.clearFields();
 		}
 		
 	}
