@@ -10,6 +10,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Criteria;
+import android.location.GpsSatellite;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -161,17 +162,28 @@ public class AddLocationActivity extends MyAbstractActivity implements
 
 		String bestProvider = locationManager.getBestProvider(criteria, true);
 		locationManager.requestLocationUpdates(bestProvider, 2000, 0, this);
+		locationManager.addGpsStatusListener(this);
 	}
 
 	private void disableUseOfCurrentPosition() {
 		locationManager.removeUpdates(this);
+		locationManager.removeGpsStatusListener(this);
 	}
 
 	@Override
 	public void onGpsStatusChanged(int event) {
-		GpsStatus status = locationManager.getGpsStatus(null);
-		currentSatelliteCount = status.getMaxSatellites();
-		updateFields();
+		if (event == GpsStatus.GPS_EVENT_SATELLITE_STATUS) {
+			GpsStatus status = locationManager.getGpsStatus(null);
+			Iterable<GpsSatellite> satellites = status.getSatellites();
+			int satellitesInFix = 0;
+			for(GpsSatellite s : satellites){
+				if(s.usedInFix()){
+					satellitesInFix++;
+				}
+			}
+			currentSatelliteCount = satellitesInFix;
+			updateFields();
+		}
 	}
 
 	@Override
