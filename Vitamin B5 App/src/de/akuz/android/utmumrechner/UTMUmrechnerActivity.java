@@ -20,8 +20,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
-public class UTMUmrechnerActivity extends MyAbstractActivity implements OnKeyListener,
-		OnCheckedChangeListener, LocationListener {
+public class UTMUmrechnerActivity extends MyAbstractActivity implements
+		OnKeyListener, OnCheckedChangeListener, LocationListener {
 
 	private EditText editUTM;
 	private EditText editLatitude;
@@ -56,7 +56,7 @@ public class UTMUmrechnerActivity extends MyAbstractActivity implements OnKeyLis
 		editLatitude.setOnKeyListener(this);
 		editLongitude.setOnKeyListener(this);
 		editUTM.setOnKeyListener(this);
-		
+
 		useCurrentPosition.setOnCheckedChangeListener(this);
 	}
 
@@ -128,28 +128,27 @@ public class UTMUmrechnerActivity extends MyAbstractActivity implements OnKeyLis
 			utm = mgrsRef.toString();
 			editUTM.setText(utm);
 		} catch (IllegalArgumentException e) {
-			Log.e("UTM","Got no valid GPS Position",e);
+			Log.e("UTM", "Got no valid GPS Position", e);
 		}
 	}
 
 	private void recalculateGPS() {
 		try {
 			utm = editUTM.getText().toString();
-			Log.d("UTM", "Recalculating GPS coordinates: "+utm);
+			Log.d("UTM", "Recalculating GPS coordinates: " + utm);
 			MGRSRef mgrsRef = new MGRSRef(utm);
 			LatLng latlng = mgrsRef.toLatLng();
 			latitude = latlng.getLatitude();
 			longitude = latlng.getLongitude();
 			updateGPSFields();
 		} catch (IllegalArgumentException e) {
-			Log.e("UTM", "UTM String is invalid",e);
+			Log.e("UTM", "UTM String is invalid", e);
 		}
 
-		
 	}
 
 	private void updateGPSFields() {
-		Log.d("UTM","Updating GPS-Fields");
+		Log.d("UTM", "Updating GPS-Fields");
 		editLatitude.setText(String.valueOf(latitude));
 		editLongitude.setText(String.valueOf(longitude));
 	}

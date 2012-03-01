@@ -19,5 +19,13 @@ public class CoordinateUtils {
 	public static String locationToMGRS(Location location){
 		return latLonToMGRS(location.getLatitude(), location.getLongitude());
 	}
+	
+	public static Location mgrsToLocation(String mgrs){
+		Location location = new Location("calculatedLocation");
+		MGRSRef mgrsRef = new MGRSRef(mgrs);
+		location.setLatitude(mgrsRef.toLatLng().getLatitude());
+		location.setLongitude(mgrsRef.toLatLng().getLongitude());
+		return location;
+	}
 
 }
