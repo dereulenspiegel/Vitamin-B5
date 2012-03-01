@@ -5,6 +5,7 @@ import de.akuz.android.utmumrechner.data.TargetLocation;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ public class TargetLocationView extends LinearLayout {
 	private void init(Context context){
 		mContext = context;
 		LayoutInflater inflater = LayoutInflater.from(context);
-		RelativeLayout baseLayout = (RelativeLayout) inflater.inflate(R.layout.location_view, this);
+		View baseLayout = inflater.inflate(R.layout.location_view, this);
 		
 		textViewUTM = (TextView)baseLayout.findViewById(R.id.textViewUTM);
 		textViewName = (TextView)baseLayout.findViewById(R.id.textViewName);
