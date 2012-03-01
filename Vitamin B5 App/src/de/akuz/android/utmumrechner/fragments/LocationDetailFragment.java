@@ -26,7 +26,7 @@ public class LocationDetailFragment extends MyAbstractFragment {
 		textViewCoordinates = (TextView) findViewById(R.id.textViewCoordinates);
 		textViewDescription = (TextView) findViewById(R.id.textViewDescription);
 		imageView = (ImageView) findViewById(R.id.imageView1);
-
+		clearFields();
 		Intent i = getActivity().getIntent();
 		if (i != null) {
 			long id = i.getLongExtra("id", -1);
@@ -34,7 +34,14 @@ public class LocationDetailFragment extends MyAbstractFragment {
 				updateContent(id);
 			}
 		}
-
+	}
+	
+	public void clearFields(){
+		textViewCoordinates.setText("");
+		textViewDescription.setText("");
+		textViewName.setText("");
+		imageView.setImageBitmap(null);
+		imageView.setVisibility(View.GONE);
 	}
 
 	public void updateContent(long id) {

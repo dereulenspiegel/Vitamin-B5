@@ -17,6 +17,6 @@
         android:id="@+id/details_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="de.akuz.android.utmumrechner.fragments.LocationDetailsFragment" />
+        class="de.akuz.android.utmumrechner.fragments.LocationDetailFragment" />
 
 </LinearLayout>

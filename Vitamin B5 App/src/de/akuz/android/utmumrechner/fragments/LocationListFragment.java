@@ -105,7 +105,10 @@ public class LocationListFragment extends MyAbstractFragment implements OnClickL
 		for(Callback c : callbacks){
 			c.itemSelected(id);
 		}
-		
+	}
+	
+	public ListAdapter getListAdapter(){
+		return adapter;
 	}
 
 }

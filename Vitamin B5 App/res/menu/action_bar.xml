@@ -3,7 +3,7 @@
     <item android:id="@+id/action_menu_convert" android:showAsAction="ifRoom|withText" android:title="@string/action_menu_convert"></item>
     <item android:id="@+id/action_menu_distance" android:showAsAction="ifRoom|withText" android:title="@string/action_menu_distance"></item>
     <item android:id="@+id/action_menu_list_locations" android:showAsAction="ifRoom|withText" android:title="@string/list_locations"></item>
-    <item android:id="@+id/action_menu_add_location" android:title="@string/add_location"></item>
+    <item android:id="@+id/action_menu_add_location" android:title="@string/add_location" android:showAsAction="ifRoom|withText"></item>
     
 
 </menu>

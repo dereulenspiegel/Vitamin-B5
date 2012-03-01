@@ -17,7 +17,6 @@ public class TargetLocationView extends LinearLayout {
 	
 	private TextView textViewUTM;
 	private TextView textViewName;
-	private TextView textViewDescription;
 	
 	private CheckBox checkBox;
 
@@ -43,7 +42,6 @@ public class TargetLocationView extends LinearLayout {
 		
 		textViewUTM = (TextView)baseLayout.findViewById(R.id.textViewUTM);
 		textViewName = (TextView)baseLayout.findViewById(R.id.textViewName);
-		textViewDescription = (TextView)baseLayout.findViewById(R.id.textViewDescription);
 		checkBox = (CheckBox)baseLayout.findViewById(R.id.checkBox);
 	}
 	
@@ -55,14 +53,9 @@ public class TargetLocationView extends LinearLayout {
 		textViewUTM.setText(utm);
 	}
 	
-	public void setDescription(String description){
-		textViewDescription.setText(description);
-	}
-	
 	public void bindTargetLocation(TargetLocation location){
 		setName(location.getName());
 		setUTM(location.getMgrsCoordinate());
-		setDescription(location.getDescription());
 	}
 	
 	public boolean isChecked(){

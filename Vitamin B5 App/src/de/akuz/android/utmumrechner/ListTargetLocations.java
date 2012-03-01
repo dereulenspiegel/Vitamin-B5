@@ -2,7 +2,9 @@ package de.akuz.android.utmumrechner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ListAdapter;
 import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
+import de.akuz.android.utmumrechner.data.TargetLocation;
 import de.akuz.android.utmumrechner.fragments.LocationDetailFragment;
 import de.akuz.android.utmumrechner.fragments.LocationListFragment;
 
@@ -24,6 +26,12 @@ public class ListTargetLocations extends MyAbstractActivity implements LocationL
 		locationListFragment = (LocationListFragment)getSupportFragmentManager().findFragmentById(R.id.list_fragment);
 		
 		locationListFragment.addCallback(this);
+		
+		ListAdapter adapter = locationListFragment.getListAdapter();
+		if(adapter.getCount() > 0 && locationDetailFragment != null){
+			TargetLocation firstLocation = (TargetLocation) adapter.getItem(0);
+			locationDetailFragment.updateContent(firstLocation.getId());
+		}
 	}
 
 	@Override
