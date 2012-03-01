@@ -225,6 +225,7 @@ public class AddLocationActivity extends MyAbstractActivity implements
 		averagePrecision = 0;
 		editTextDescription.setText("");
 		editTextName.setText("");
+		updateFields();
 	}
 
 	private void takePicture() {
