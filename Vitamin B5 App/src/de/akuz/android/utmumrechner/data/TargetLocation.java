@@ -40,7 +40,7 @@ public class TargetLocation {
 		this.name = name;
 	}
 
-	long getId() {
+	public long getId() {
 		return id;
 	}
 
