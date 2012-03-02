@@ -32,5 +32,12 @@
     <string name="menu_share_locations">Markierte Orte teilen</string>
     <string name="choose_sending_intent">Versenden mit...</string>
     <string name="progress_dialog_exporting_entries">Exportiere...</string>
+    <string name="you_are_here">Du befindest dich gerade an</string>
+    <string name="accuracy">Abweichung +/-</string>
+    <plurals name="you_have_in_db">
+        <item quantity="one">Du hast einen Ort gespeichert</item>
+        <item quantity="zero">Du hast keinen Ort gespeichert</item>
+        <item quantity="other">Du hast %1$s Orte gespeichert</item>
+    </plurals>
 
 </resources>
