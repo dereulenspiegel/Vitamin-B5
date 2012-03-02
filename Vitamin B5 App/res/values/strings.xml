@@ -25,5 +25,10 @@
     <string name="error_please_provide_all_info">Bitte fülle alle Felder aus</string>
     <string name="error_coordinate_required">Zum Aufnehmen eines Ortes muss der Ort bestimmt werden</string>
     <string name="delete_marked_locations">Markierte Orte löschen</string>
+    <string name="action_item_remove_marked_locations">Markierte Orte löschen</string>
+    <string name="menu_location_utils">Helfer</string>
+    <string name="menu_locations">Orte</string>
+    <string name="submenu_edit">Bearbeiten</string>
+    <string name="menu_share_locations">Markierte Orte teilen</string>
 
 </resources>
