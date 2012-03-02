@@ -30,15 +30,16 @@ public class Center extends MyAbstractActivity implements LocationListener {
 		super.onCreate(savedInstanceState);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.NO_REQUIREMENT);
 		criteria.setAltitudeRequired(false);
 		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(false);
-		criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
+		criteria.setCostAllowed(true);
 		criteria.setSpeedRequired(false);
-
+		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		String bestProvider = locationManager.getBestProvider(criteria, true);
 		locationManager.requestLocationUpdates(bestProvider, 5000, 50, this);
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+		String secondBestProvider = locationManager.getBestProvider(criteria, true);
+		locationManager.requestLocationUpdates(secondBestProvider, 5000, 50, this);
 		setContentView(R.layout.center);
 		initUIElements();
 	}
