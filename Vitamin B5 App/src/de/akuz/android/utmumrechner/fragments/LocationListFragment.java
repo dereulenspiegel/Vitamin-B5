@@ -233,7 +233,7 @@ public class LocationListFragment extends MyAbstractFragment implements
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("application/zip");
 		i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(exportFile));
-		startActivity(Intent.createChooser(i, "Orte senden..."));
+		startActivity(Intent.createChooser(i, getString(R.string.choose_sending_intent)));
 	}
 	
 	private void exportSelectedLocationsToArchive(){
@@ -253,7 +253,7 @@ public class LocationListFragment extends MyAbstractFragment implements
 	public void exportStarted() {
 		exportProgressDialog = new ProgressDialog(this.getActivity());
 		exportProgressDialog.setCancelable(false);
-		exportProgressDialog.setMessage("Exportiere Einträge");
+		exportProgressDialog.setMessage(getString(R.string.progress_dialog_exporting_entries));
 		
 	}
 

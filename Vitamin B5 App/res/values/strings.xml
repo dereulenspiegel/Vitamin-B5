@@ -30,5 +30,7 @@
     <string name="menu_locations">Orte</string>
     <string name="submenu_edit">Bearbeiten</string>
     <string name="menu_share_locations">Markierte Orte teilen</string>
+    <string name="choose_sending_intent">Versenden mit...</string>
+    <string name="progress_dialog_exporting_entries">Exportiere...</string>
 
 </resources>

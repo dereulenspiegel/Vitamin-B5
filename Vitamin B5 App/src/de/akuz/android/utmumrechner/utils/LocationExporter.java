@@ -42,9 +42,19 @@ public class LocationExporter extends AsyncTask<List<TargetLocation>, Integer, B
 		locationCount = locations.size();
 		try {
 			createZipFile(outPath);
+			if(this.isCancelled()){
+				File file = new File(outPath);
+				file.delete();
+				return false;
+			}
 			addBytesToZip("orte.csv", generateCSVExport());
 			int i = 0;
 			for(TargetLocation l : locations){
+				if(this.isCancelled()){
+					File file = new File(outPath);
+					file.delete();
+					return false;
+				}
 				if(l.getPictureUrl()!=null){
 					addZipFile(l.getPictureUrl());
 				}
