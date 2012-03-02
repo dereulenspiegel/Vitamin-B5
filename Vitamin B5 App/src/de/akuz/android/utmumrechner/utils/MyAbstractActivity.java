@@ -1,22 +1,24 @@
 package de.akuz.android.utmumrechner.utils;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import de.akuz.android.utmumrechner.AddLocationActivity;
 import de.akuz.android.utmumrechner.CalculateDistance;
 import de.akuz.android.utmumrechner.ListTargetLocations;
 import de.akuz.android.utmumrechner.R;
+
 import de.akuz.android.utmumrechner.UTMUmrechnerActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 public class MyAbstractActivity extends FragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.action_bar, menu);
 		return true;
 	}

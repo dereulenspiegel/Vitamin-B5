@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="B5Theme" parent="@android:style/Theme.Light"></style>
+    <style name="B5Theme" parent="style/Theme.Sherlock.Light"></style>
 
 </resources>

@@ -9,6 +9,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/UTM Umrechner/libs/jcoord-1.1-b.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="libs/actionbarsherlock-plugin-support-lib-4.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
