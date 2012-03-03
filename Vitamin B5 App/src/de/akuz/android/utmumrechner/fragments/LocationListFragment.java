@@ -128,11 +128,6 @@ public class LocationListFragment extends MyAbstractFragment implements
 	@Override
 	protected void initUIElements() {
 		listView = (ListView) findViewById(R.id.listViewLoactions);
-		db.open();
-		adapter = new LocationListAdapter(this.getActivity(), 0, 0,
-				db.getAllLocations());
-		db.close();
-		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 	}
 
@@ -270,6 +265,16 @@ public class LocationListFragment extends MyAbstractFragment implements
 		exportProgressDialog.setMax(max);
 		exportProgressDialog.setProgress(progress);
 		
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		db.open();
+		adapter = new LocationListAdapter(this.getActivity(), 0, 0,
+				db.getAllLocations());
+		db.close();
+		listView.setAdapter(adapter);
 	}
 
 }
