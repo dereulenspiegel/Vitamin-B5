@@ -218,6 +218,7 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 		}
 		db.close();
 		clearFieldsAndResetAverages();
+		getActivity().finish();
 	}
 
 	private void clearFieldsAndResetAverages() {
