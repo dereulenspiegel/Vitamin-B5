@@ -5,13 +5,11 @@ import java.util.List;
 
 import de.akuz.android.utmumrechner.data.LocationDatabase;
 import de.akuz.android.utmumrechner.data.TargetLocation;
+import de.akuz.android.utmumrechner.utils.BestLocationListenerWrapper;
 import de.akuz.android.utmumrechner.utils.CoordinateUtils;
 import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
-import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -21,25 +19,14 @@ public class Center extends MyAbstractActivity implements LocationListener {
 	private TextView textViewAccuracy;
 	private TextView textViewDatabaseCount;
 	
-	private LocationManager locationManager;
-	
 	private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.000");
+	
+	private BestLocationListenerWrapper locationListenerWrapper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		Criteria criteria = new Criteria();
-		criteria.setAltitudeRequired(false);
-		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(true);
-		criteria.setSpeedRequired(false);
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		String bestProvider = locationManager.getBestProvider(criteria, true);
-		locationManager.requestLocationUpdates(bestProvider, 5000, 50, this);
-		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-		String secondBestProvider = locationManager.getBestProvider(criteria, true);
-		locationManager.requestLocationUpdates(secondBestProvider, 5000, 50, this);
+		locationListenerWrapper = new BestLocationListenerWrapper(this, this);
 		setContentView(R.layout.center);
 		initUIElements();
 	}
@@ -57,6 +44,8 @@ public class Center extends MyAbstractActivity implements LocationListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Location lastLocation = locationListenerWrapper.getLastBestLocation();
+		onLocationChanged(lastLocation);
 		LocationDatabase db = new LocationDatabase(this);
 		db.open();
 		List<TargetLocation> list = db.getAllLocations();
@@ -91,7 +80,7 @@ public class Center extends MyAbstractActivity implements LocationListener {
 
 	@Override
 	protected void onDestroy() {
-		locationManager.removeUpdates(this);
+		locationListenerWrapper.destroy();
 		super.onDestroy();
 	}
 
