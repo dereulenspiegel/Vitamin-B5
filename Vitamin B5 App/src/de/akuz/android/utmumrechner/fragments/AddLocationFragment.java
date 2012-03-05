@@ -72,7 +72,7 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 				this.getActivity().getPackageName());
 		locations = new LinkedList<Location>();
 		setContentView(R.layout.fragment_add_location);
-		
+		setRetainInstance(true);
 
 	}
 

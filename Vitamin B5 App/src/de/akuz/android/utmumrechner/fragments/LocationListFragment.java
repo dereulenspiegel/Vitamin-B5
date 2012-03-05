@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.ShareActionProvider;
 
 import com.actionbarsherlock.view.ActionProvider;
-import com.actionbarsherlock.view.ActionProvider.SubUiVisibilityListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -35,7 +34,7 @@ import de.akuz.android.utmumrechner.utils.LocationExporter;
 import de.akuz.android.utmumrechner.views.TargetLocationView;
 
 public class LocationListFragment extends MyAbstractFragment implements
-		 OnItemClickListener, LocationExporter.ExportListener {
+		OnItemClickListener, LocationExporter.ExportListener {
 
 	private static class LocationListAdapter extends
 			ArrayAdapter<TargetLocation> {
@@ -60,11 +59,11 @@ public class LocationListFragment extends MyAbstractFragment implements
 		}
 
 	}
-	
+
 	public static class ShareActionProviderCompat extends ActionProvider {
-		
+
 		private ShareActionProvider mShareActionProvider;
-		
+
 		public ShareActionProviderCompat(Context context) {
 			super(context);
 			mShareActionProvider = new ShareActionProvider(context);
@@ -84,15 +83,16 @@ public class LocationListFragment extends MyAbstractFragment implements
 		public boolean hasSubMenu() {
 			return mShareActionProvider.hasSubMenu();
 		}
-		
-		public void setOnShareTargetSelectedListener(ShareActionProvider.OnShareTargetSelectedListener listener){
+
+		public void setOnShareTargetSelectedListener(
+				ShareActionProvider.OnShareTargetSelectedListener listener) {
 			mShareActionProvider.setOnShareTargetSelectedListener(listener);
 		}
-		
-		public void setShareIntent(Intent shareIntent){
+
+		public void setShareIntent(Intent shareIntent) {
 			mShareActionProvider.setShareIntent(shareIntent);
 		}
-		
+
 	}
 
 	public interface Callback {
@@ -110,10 +110,10 @@ public class LocationListFragment extends MyAbstractFragment implements
 
 	private final static int MENU_REMOVE_SELECTED_LOCATIONS = 10;
 	private final static int MENU_SHARE_SELECTED_LOCATIONS = 11;
-	
+
 	private File exportFolder = Environment.getExternalStorageDirectory();
-	private File exportFile = new File(exportFolder,"orte.zip");
-	
+	private File exportFile = new File(exportFolder, "orte.zip");
+
 	private ProgressDialog exportProgressDialog;
 
 	@Override
@@ -121,6 +121,10 @@ public class LocationListFragment extends MyAbstractFragment implements
 		super.onCreate(savedInstanceState);
 		callbacks = new ArrayList<Callback>();
 		db = new LocationDatabase(this.getActivity());
+		db.open();
+		adapter = new LocationListAdapter(this.getActivity(), 0, 0,
+				db.getAllLocations());
+		db.close();
 		setContentView(R.layout.fragment_location_list);
 		setHasOptionsMenu(true);
 	}
@@ -129,6 +133,7 @@ public class LocationListFragment extends MyAbstractFragment implements
 	protected void initUIElements() {
 		listView = (ListView) findViewById(R.id.listViewLoactions);
 		listView.setOnItemClickListener(this);
+		listView.setAdapter(adapter);
 	}
 
 	public void addCallback(Callback callback) {
@@ -201,7 +206,8 @@ public class LocationListFragment extends MyAbstractFragment implements
 				MENU_REMOVE_SELECTED_LOCATIONS, Menu.NONE,
 				R.string.delete_marked_locations);
 		MenuItem shareItem = subMenu.add(Menu.NONE,
-				MENU_SHARE_SELECTED_LOCATIONS, Menu.NONE, R.string.menu_share_locations);
+				MENU_SHARE_SELECTED_LOCATIONS, Menu.NONE,
+				R.string.menu_share_locations);
 
 		// removeItem.setActionProvider(new RemoveActionProvider(this));
 	}
@@ -219,20 +225,21 @@ public class LocationListFragment extends MyAbstractFragment implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	private void shareSelectedLocations(){
+
+	private void shareSelectedLocations() {
 		exportSelectedLocationsToArchive();
 	}
-	
-	private void sendExportedLocations(){
+
+	private void sendExportedLocations() {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("application/zip");
 		i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(exportFile));
-		startActivity(Intent.createChooser(i, getString(R.string.choose_sending_intent)));
+		startActivity(Intent.createChooser(i,
+				getString(R.string.choose_sending_intent)));
 	}
-	
-	private void exportSelectedLocationsToArchive(){
-		if(exportFile.exists()){
+
+	private void exportSelectedLocationsToArchive() {
+		if (exportFile.exists()) {
 			exportFile.delete();
 		}
 		String exportPath = exportFile.getAbsolutePath();
@@ -241,30 +248,31 @@ public class LocationListFragment extends MyAbstractFragment implements
 		exporter.setOutputPath(exportPath);
 		exporter.addListener(this);
 		exporter.execute(locations);
-		
+
 	}
 
 	@Override
 	public void exportStarted() {
 		exportProgressDialog = new ProgressDialog(this.getActivity());
 		exportProgressDialog.setCancelable(false);
-		exportProgressDialog.setMessage(getString(R.string.progress_dialog_exporting_entries));
-		
+		exportProgressDialog
+				.setMessage(getString(R.string.progress_dialog_exporting_entries));
+
 	}
 
 	@Override
 	public void exportFinished() {
-		
+
 		exportProgressDialog.dismiss();
 		sendExportedLocations();
-		
+
 	}
 
 	@Override
 	public void updateProgress(int max, int progress) {
 		exportProgressDialog.setMax(max);
 		exportProgressDialog.setProgress(progress);
-		
+
 	}
 
 	@Override
