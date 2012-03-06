@@ -14,6 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LocationDetailFragment extends MyAbstractFragment implements OnClickListener{
+	
+	public interface LocationDetailListener{
+		
+		public void showPicture(TargetLocation location);
+		public void showOnMap(TargetLocation location);
+		
+	}
 
 	private TextView textViewName;
 	private TextView textViewCoordinates;
@@ -22,7 +29,11 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 
 	private LocationDatabase db;
 	
+	private TargetLocation location;
+	
 	private Uri imageUri;
+	
+	private LocationDetailListener listener;
 
 	@Override
 	protected void initUIElements() {
@@ -30,7 +41,9 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 		textViewCoordinates = (TextView) findViewById(R.id.textViewCoordinates);
 		textViewDescription = (TextView) findViewById(R.id.textViewDescription);
 		imageView = (ImageView) findViewById(R.id.imageView1);
+		
 		imageView.setOnClickListener(this);
+		textViewCoordinates.setOnClickListener(this);
 		clearFields();
 		Intent i = getActivity().getIntent();
 		if (i != null) {
@@ -51,7 +64,7 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 
 	public void updateContent(long id) {
 		db.open();
-		TargetLocation location = db.getLocationById(id);
+		location = db.getLocationById(id);
 		db.close();
 
 		textViewName.setText(location.getName());
@@ -82,17 +95,30 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == imageView.getId()){
-//			showFullPicture();
+			showFullPicture();
+		}
+		if(v.getId() == textViewCoordinates.getId()){
+			showCoordinatesOnMap();
 		}
 		
 	}
 	
+	private void showCoordinatesOnMap(){
+//		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//		MapViewFragment mapFragment = new MapViewFragment();
+//		mapFragment.show(ft, "mapView");
+	}
+	
 	private void showFullPicture(){
-		//TODO Fix the bug causing the image viewer to crash (probably permissions)
-		Intent i = new Intent();
-		i.setAction(Intent.ACTION_VIEW);
-		i.setDataAndType(imageUri, "image/*");
-		startActivity(i);
+		listener.showPicture(location);
+	}
+	
+	public void setListener(LocationDetailListener listener){
+		this.listener = listener;
+	}
+	
+	public void unSetListener(){
+		this.listener = null;
 	}
 
 }
