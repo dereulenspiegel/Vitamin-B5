@@ -79,19 +79,22 @@ public class GestureImageView extends View {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
 		int orientation = getResources().getConfiguration().orientation;
-
+		//TODO make it configurable if you want the imageview to wrap your image or not
 		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			displayHeight = MeasureSpec.getSize(heightMeasureSpec);
-			float ratio = (float) this.bitmap.getWidth()
-					/ (float) this.bitmap.getHeight();
-			displayWidth = Math.round((float) displayHeight * ratio);
+			displayWidth = MeasureSpec.getSize(widthMeasureSpec);
+			if (this.bitmap != null) {
+//				float ratio = (float) this.bitmap.getWidth()
+//						/ (float) this.bitmap.getHeight();
+//				displayWidth = Math.round((float) displayHeight * ratio);
+			}
 		} else {
 			displayWidth = MeasureSpec.getSize(widthMeasureSpec);
 			displayHeight = MeasureSpec.getSize(heightMeasureSpec);
 			if (this.bitmap != null) {
-//				float ratio = (float) this.bitmap.getHeight()
-//						/ (float) this.bitmap.getWidth();
-//				displayHeight = Math.round((float) displayWidth * ratio);
+				// float ratio = (float) this.bitmap.getHeight()
+				// / (float) this.bitmap.getWidth();
+				// displayHeight = Math.round((float) displayWidth * ratio);
 			}
 		}
 
