@@ -235,7 +235,7 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 	private void takePicture() {
 		if (StringUtils.isEmtpy(textViewCurrentPosition.getText().toString())) {
 			Toast.makeText(this.getActivity(), R.string.error_coordinate_required,
-					Toast.LENGTH_LONG);
+					Toast.LENGTH_LONG).show();
 			return;
 		}
 		Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
