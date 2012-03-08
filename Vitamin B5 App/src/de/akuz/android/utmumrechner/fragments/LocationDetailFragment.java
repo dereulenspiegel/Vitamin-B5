@@ -8,6 +8,7 @@ import com.actionbarsherlock.view.SubMenu;
 import de.akuz.android.utmumrechner.R;
 import de.akuz.android.utmumrechner.data.LocationDatabase;
 import de.akuz.android.utmumrechner.data.TargetLocation;
+import de.akuz.android.utmumrechner.utils.StringUtils;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,13 +19,15 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class LocationDetailFragment extends MyAbstractFragment implements OnClickListener{
-	
-	public interface LocationDetailListener{
-		
+public class LocationDetailFragment extends MyAbstractFragment implements
+		OnClickListener {
+
+	public interface LocationDetailListener {
+
 		public void showPicture(TargetLocation location);
+
 		public void showOnMap(TargetLocation location);
-		
+
 	}
 
 	private TextView textViewName;
@@ -35,11 +38,12 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 	private LocationDatabase db;
 	
 	private TargetLocation location;
-	
+
 	private Uri imageUri;
-	
+	private Bitmap image;
+
 	private LocationDetailListener listener;
-	
+
 	private final static int MENU_SHOW_ON_MAP = 31;
 	private final static int MENU_SHOW_FULL_PICTURE = 32;
 
@@ -49,20 +53,20 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 		textViewCoordinates = (TextView) findViewById(R.id.textViewCoordinates);
 		textViewDescription = (TextView) findViewById(R.id.textViewDescription);
 		imageView = (ImageView) findViewById(R.id.imageView1);
-		
+
 		imageView.setOnClickListener(this);
 		textViewCoordinates.setOnClickListener(this);
 		clearFields();
 		Intent i = getActivity().getIntent();
 		if (i != null) {
 			long id = i.getLongExtra("id", -1);
-			if(id > -1){
+			if (id > -1) {
 				updateContent(id);
 			}
 		}
 	}
-	
-	public void clearFields(){
+
+	public void clearFields() {
 		textViewCoordinates.setText("");
 		textViewDescription.setText("");
 		textViewName.setText("");
@@ -71,6 +75,9 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 	}
 
 	public void updateContent(long id) {
+		if(location != null && location.getId() == id){
+			return;
+		}
 		db.open();
 		location = db.getLocationById(id);
 		db.close();
@@ -78,18 +85,18 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 		textViewName.setText(location.getName());
 		textViewCoordinates.setText(location.getMgrsCoordinate());
 		textViewDescription.setText(location.getDescription());
-		updateImage(location.getPictureUrl());
+		updateImage(Uri.parse(location.getPictureUrl()));
 	}
-	
-	private void updateImage(String url){
-		if (url != null) {
-			imageUri = Uri.parse(url);
-			Bitmap image = BitmapFactory.decodeFile(url);
-			imageView.setImageBitmap(image);
-			imageView.setVisibility(View.VISIBLE);
-		} else {
+
+	private void updateImage(Uri uri) {
+		if (uri == null) {
 			imageView.setImageBitmap(null);
 			imageView.setVisibility(View.GONE);
+		} else if (imageUri == null || !imageUri.equals(uri)) {
+			imageUri = uri;
+			image = BitmapFactory.decodeFile(uri.toString());
+			imageView.setImageBitmap(image);
+			imageView.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -102,55 +109,68 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 
 	@Override
 	public void onClick(View v) {
-		if(v.getId() == imageView.getId()){
+		if (v.getId() == imageView.getId()) {
 			showFullPicture();
 		}
-		if(v.getId() == textViewCoordinates.getId()){
+		if (v.getId() == textViewCoordinates.getId()) {
 			showCoordinatesOnMap();
 		}
-		
+
 	}
-	
-	private void showCoordinatesOnMap(){
-		if(listener != null){
+
+	private void showCoordinatesOnMap() {
+		if (listener != null) {
 			listener.showOnMap(location);
 		}
 	}
-	
-	private void showFullPicture(){
-		if(listener != null){
+
+	private void showFullPicture() {
+		if (listener != null) {
 			listener.showPicture(location);
 		}
 	}
-	
-	public void setListener(LocationDetailListener listener){
-		if(listener != null){
+
+	public void setListener(LocationDetailListener listener) {
+		if (listener != null) {
 			this.listener = listener;
 		}
-			
+
 	}
-	
-	public void unSetListener(){
+
+	public void unSetListener() {
 		this.listener = null;
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		SubMenu subMenu = menu.addSubMenu(getString(R.string.sub_menu_location_detail));
-		subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-		subMenu.add(Menu.NONE, MENU_SHOW_ON_MAP, Menu.NONE, R.string.show_on_map);
+		SubMenu subMenu = menu
+				.addSubMenu(getString(R.string.sub_menu_location_detail));
+		subMenu.getItem().setShowAsAction(
+				MenuItem.SHOW_AS_ACTION_ALWAYS
+						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		subMenu.add(Menu.NONE, MENU_SHOW_ON_MAP, Menu.NONE,
+				R.string.show_on_map);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		switch(id){
+		switch (id) {
 		case MENU_SHOW_ON_MAP:
 			showCoordinatesOnMap();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onDestroy() {
+		if(image != null){
+			image.recycle();
+			image = null;
+		}
+		super.onDestroy();
 	}
 
 }

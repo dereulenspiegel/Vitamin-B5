@@ -3,6 +3,7 @@ package de.akuz.android.utmumrechner;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import de.akuz.android.utmumrechner.fragments.ImageViewFragment;
 import de.akuz.android.utmumrechner.utils.StringUtils;
 
@@ -16,15 +17,13 @@ public class ImageViewActivity extends FragmentActivity {
 		setContentView(R.layout.image_view_activity);
 		getSupportActionBar().hide();
 		fragment = (ImageViewFragment)getSupportFragmentManager().findFragmentById(R.id.image_view_fragment);
-		if(getImageUri() != null){
-			fragment.setImageUri(getImageUri());
-		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if(getImageUri() != null){
+			Log.d("UTM","Activity Setting image uri in onResume:"+getImageUri().toString());
 			fragment.setImageUri(getImageUri());
 		}
 	}
@@ -37,7 +36,16 @@ public class ImageViewActivity extends FragmentActivity {
 				return Uri.parse(uri);
 			}
 		}
+		if(getLastCustomNonConfigurationInstance() != null){
+			return (Uri)getLastCustomNonConfigurationInstance();
+		}
 		return null;
+	}
+
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		Log.d("UTM","Retaining image uri");
+		return getImageUri();
 	}
 
 }
