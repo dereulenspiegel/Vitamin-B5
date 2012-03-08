@@ -14,6 +14,7 @@ public class ImageViewActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
 		setContentView(R.layout.image_view_activity);
+		getSupportActionBar().hide();
 		fragment = (ImageViewFragment)getSupportFragmentManager().findFragmentById(R.id.image_view_fragment);
 		if(getImageUri() != null){
 			fragment.setImageUri(getImageUri());
