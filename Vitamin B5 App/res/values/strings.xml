@@ -39,5 +39,7 @@
         <item quantity="zero">Du hast keinen Ort gespeichert</item>
         <item quantity="other">Du hast %1$s Orte gespeichert</item>
     </plurals>
+    <string name="sub_menu_location_detail">Ort...</string>
+    <string name="show_on_map">... auf Karte zeigen</string>
 
 </resources>

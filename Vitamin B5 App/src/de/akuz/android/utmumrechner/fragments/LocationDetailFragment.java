@@ -1,5 +1,10 @@
 package de.akuz.android.utmumrechner.fragments;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
+
 import de.akuz.android.utmumrechner.R;
 import de.akuz.android.utmumrechner.data.LocationDatabase;
 import de.akuz.android.utmumrechner.data.TargetLocation;
@@ -34,6 +39,9 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 	private Uri imageUri;
 	
 	private LocationDetailListener listener;
+	
+	private final static int MENU_SHOW_ON_MAP = 31;
+	private final static int MENU_SHOW_FULL_PICTURE = 32;
 
 	@Override
 	protected void initUIElements() {
@@ -104,21 +112,45 @@ public class LocationDetailFragment extends MyAbstractFragment implements OnClic
 	}
 	
 	private void showCoordinatesOnMap(){
-//		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//		MapViewFragment mapFragment = new MapViewFragment();
-//		mapFragment.show(ft, "mapView");
+		if(listener != null){
+			listener.showOnMap(location);
+		}
 	}
 	
 	private void showFullPicture(){
-		listener.showPicture(location);
+		if(listener != null){
+			listener.showPicture(location);
+		}
 	}
 	
 	public void setListener(LocationDetailListener listener){
-		this.listener = listener;
+		if(listener != null){
+			this.listener = listener;
+		}
+			
 	}
 	
 	public void unSetListener(){
 		this.listener = null;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		SubMenu subMenu = menu.addSubMenu(getString(R.string.sub_menu_location_detail));
+		subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS|MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		subMenu.add(Menu.NONE, MENU_SHOW_ON_MAP, Menu.NONE, R.string.show_on_map);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		switch(id){
+		case MENU_SHOW_ON_MAP:
+			showCoordinatesOnMap();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

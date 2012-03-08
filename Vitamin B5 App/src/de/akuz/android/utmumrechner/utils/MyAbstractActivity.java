@@ -18,8 +18,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-public class MyAbstractActivity extends FragmentActivity implements OnNavigationListener{
-	
+public class MyAbstractActivity extends FragmentActivity implements
+		OnNavigationListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -31,7 +31,7 @@ public class MyAbstractActivity extends FragmentActivity implements OnNavigation
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		switch(id){
+		switch (id) {
 		case R.id.action_menu_convert:
 			startMyActivity(UTMUmrechnerActivity.class);
 			return true;
@@ -47,12 +47,12 @@ public class MyAbstractActivity extends FragmentActivity implements OnNavigation
 		case android.R.id.home:
 			startMyActivity(Center.class);
 		}
-		
+
 		return false;
 	}
-	
-	private void startMyActivity(Class<? extends Activity> activityClass){
-		Intent i = new Intent(this,activityClass);
+
+	protected void startMyActivity(Class<? extends Activity> activityClass) {
+		Intent i = new Intent(this, activityClass);
 		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(i);
 	}

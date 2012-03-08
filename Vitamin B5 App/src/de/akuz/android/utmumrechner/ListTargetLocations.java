@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.widget.ListAdapter;
 import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
 import de.akuz.android.utmumrechner.data.TargetLocation;
+import de.akuz.android.utmumrechner.fragments.ImageViewFragment;
 import de.akuz.android.utmumrechner.fragments.LocationDetailFragment;
 import de.akuz.android.utmumrechner.fragments.LocationListFragment;
 
-public class ListTargetLocations extends MyAbstractActivity implements LocationListFragment.Callback {
+public class ListTargetLocations extends MyAbstractActivity implements LocationListFragment.Callback, LocationDetailFragment.LocationDetailListener {
 	
 	private LocationListFragment locationListFragment;
 	private LocationDetailFragment locationDetailFragment;
@@ -28,6 +29,10 @@ public class ListTargetLocations extends MyAbstractActivity implements LocationL
 		locationListFragment = (LocationListFragment)getSupportFragmentManager().findFragmentById(R.id.list_fragment);
 		
 		locationListFragment.addCallback(this);
+		
+		if(locationDetailFragment != null){
+			locationDetailFragment.setListener(this);
+		}
 		
 		ListAdapter adapter = locationListFragment.getListAdapter();
 		if(adapter.getCount() > 0 && locationDetailFragment != null){
@@ -55,6 +60,20 @@ public class ListTargetLocations extends MyAbstractActivity implements LocationL
 		if(id == currentShownId && locationDetailFragment != null){
 			locationDetailFragment.clearFields();
 		}
+		
+	}
+
+	@Override
+	public void showPicture(TargetLocation location) {
+		Intent i = new Intent(this, ImageViewActivity.class);
+		i.putExtra(ImageViewFragment.EXTRA_IMAGE_URI, location.getPictureUrl());
+		startActivity(i);
+		
+	}
+
+	@Override
+	public void showOnMap(TargetLocation location) {
+		// TODO Auto-generated method stub
 		
 	}
 

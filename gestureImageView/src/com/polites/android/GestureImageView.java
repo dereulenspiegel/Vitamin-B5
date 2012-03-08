@@ -11,53 +11,53 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class GestureImageView extends View  {
-	
+public class GestureImageView extends View {
+
 	public static final String GLOBAL_NS = "http://schemas.android.com/apk/res/android";
 	public static final String LOCAL_NS = "http://schemas.polites.com/android";
-	
+
 	private Bitmap bitmap;
-	
+
 	private Paint paint;
 
 	private float x = 0, y = 0;
-	
+
 	private boolean layout = false;
 	private boolean viewSet = false;
-	
+
 	private float scaleAdjust = 1.0f;
 	private float startingScale = 1.0f;
 
 	private float scale = 1.0f;
 	private float maxScale = 5.0f;
 	private float minScale = 0.25f;
-	
+
 	private float rotation = 0.0f;
-	
+
 	private int lastOrientation = -1;
-	
+
 	private float centerX;
 	private float centerY;
-	
+
 	private float hWidth;
 	private float hHeight;
-	
+
 	private int resId = -1;
 	private boolean recycle = false;
-	
+
 	private int displayHeight;
 	private int displayWidth;
-	
+
 	private GestureImageViewListener gestureImageViewListener;
 	private GestureImageViewTouchListener gestureImageViewTouchListener;
-	
-	private Handler mRedrawHandler = new Handler()  {
+
+	private Handler mRedrawHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			invalidate();
 		}
 	};
-	
+
 	public GestureImageView(Context context, AttributeSet attrs, int defStyle) {
 		this(context, attrs);
 	}
@@ -65,91 +65,102 @@ public class GestureImageView extends View  {
 	public GestureImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setImageResource(attrs.getAttributeResourceValue(GLOBAL_NS, "src", -1));
-		setMinScale(attrs.getAttributeFloatValue(LOCAL_NS, "min-scale", minScale));
-		setMaxScale(attrs.getAttributeFloatValue(LOCAL_NS, "max-scale", maxScale));
+		setMinScale(attrs.getAttributeFloatValue(LOCAL_NS, "min-scale",
+				minScale));
+		setMaxScale(attrs.getAttributeFloatValue(LOCAL_NS, "max-scale",
+				maxScale));
 	}
 
 	public GestureImageView(Context context) {
 		super(context);
 	}
-	
+
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		
+
 		int orientation = getResources().getConfiguration().orientation;
-		
-		if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			displayHeight = MeasureSpec.getSize(heightMeasureSpec);
-			float ratio = (float) this.bitmap.getWidth() / (float) this.bitmap.getHeight();
-			displayWidth = Math.round( (float) displayHeight * ratio) ;
-		}
-		else {
+			float ratio = (float) this.bitmap.getWidth()
+					/ (float) this.bitmap.getHeight();
+			displayWidth = Math.round((float) displayHeight * ratio);
+		} else {
 			displayWidth = MeasureSpec.getSize(widthMeasureSpec);
-			float ratio = (float) this.bitmap.getHeight() / (float) this.bitmap.getWidth();
-			displayHeight = Math.round( (float) displayWidth * ratio) ;
+			displayHeight = MeasureSpec.getSize(heightMeasureSpec);
+			if (this.bitmap != null) {
+//				float ratio = (float) this.bitmap.getHeight()
+//						/ (float) this.bitmap.getWidth();
+//				displayHeight = Math.round((float) displayWidth * ratio);
+			}
 		}
-		
+
 		setMeasuredDimension(displayWidth, displayHeight);
 	}
-	
+
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
 		super.onLayout(changed, left, top, right, bottom);
-		if(changed) {
-			setupCanvas(displayWidth, displayHeight, getResources().getConfiguration().orientation);
+		if (changed) {
+			setupCanvas(displayWidth, displayHeight, getResources()
+					.getConfiguration().orientation);
 		}
 	}
 
-	protected void setupCanvas(int measuredWidth, int measuredHeight, int orientation) {
-		
-		if(lastOrientation != orientation) {
+	protected void setupCanvas(int measuredWidth, int measuredHeight,
+			int orientation) {
+
+		if (lastOrientation != orientation) {
 			layout = false;
 			lastOrientation = orientation;
 		}
-		
-		if(bitmap != null && !layout) {
-			
+
+		if (bitmap != null && !layout) {
+
 			int imageWidth = this.bitmap.getWidth();
 			int imageHeight = this.bitmap.getHeight();
 
-			hWidth = ((float)imageWidth / 2.0f);
-			hHeight = ((float)imageHeight / 2.0f);
-			
-			if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			hWidth = ((float) imageWidth / 2.0f);
+			hHeight = ((float) imageHeight / 2.0f);
+
+			if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 				displayHeight = measuredHeight;
-				
+
 				// Calc height based on width
-				float ratio = (float) this.bitmap.getWidth() / (float) imageHeight;
-				
-				displayWidth = Math.round( (float) displayHeight * ratio);
-				
+				float ratio = (float) this.bitmap.getWidth()
+						/ (float) imageHeight;
+
+				displayWidth = Math.round((float) displayHeight * ratio);
+
 				startingScale = (float) displayHeight / (float) imageHeight;
-			}
-			else {
+			} else {
 				displayWidth = measuredWidth;
-				
+
 				// Calc height based on width
-				float ratio = (float) this.bitmap.getHeight() / (float) imageWidth;
-				
-				displayHeight = Math.round( (float) displayWidth * ratio) ;
-				
+				float ratio = (float) this.bitmap.getHeight()
+						/ (float) imageWidth;
+
+				displayHeight = Math.round((float) displayWidth * ratio);
+
 				startingScale = (float) displayWidth / (float) imageWidth;
 			}
-			
+
 			scaleAdjust = startingScale;
-			
-			this.centerX = (float)measuredWidth / 2.0f;
-			this.centerY = (float)measuredHeight / 2.0f;
-			
+
+			this.centerX = (float) measuredWidth / 2.0f;
+			this.centerY = (float) measuredHeight / 2.0f;
+
 			x = centerX;
 			y = centerY;
-			
-			gestureImageViewTouchListener = new GestureImageViewTouchListener(this, measuredWidth, measuredHeight);
+
+			gestureImageViewTouchListener = new GestureImageViewTouchListener(
+					this, measuredWidth, measuredHeight);
 			gestureImageViewTouchListener.setMinScale(minScale);
 			gestureImageViewTouchListener.setMaxScale(maxScale);
-			
-			setOnTouchListener(gestureImageViewTouchListener);	
-			
+
+			setOnTouchListener(gestureImageViewTouchListener);
+
 			layout = true;
 			viewSet = false;
 		}
@@ -157,46 +168,42 @@ public class GestureImageView extends View  {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		if(layout) {
-			if(!viewSet) {
-//				canvas.setViewport(displayWidth, displayHeight);
-				viewSet = true;
-			}
-			
-			if(bitmap != null && !bitmap.isRecycled()) {
+		if (layout) {
+
+			if (bitmap != null && !bitmap.isRecycled()) {
 				canvas.save();
-				
+
 				float adjustedScale = scale * scaleAdjust;
-				
+
 				canvas.translate(x, y);
-				
-				if(rotation != 0.0f) {
+
+				if (rotation != 0.0f) {
 					canvas.rotate(rotation);
 				}
-				
-				if(adjustedScale != 1.0f) {
+
+				if (adjustedScale != 1.0f) {
 					canvas.scale(adjustedScale, adjustedScale);
 				}
-				
-				canvas.drawBitmap(bitmap,-hWidth,-hHeight,paint);
-				
+
+				canvas.drawBitmap(bitmap, -hWidth, -hHeight, paint);
+
 				canvas.restore();
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onAttachedToWindow() {
-		if(resId >= 0 && bitmap == null) {
+		if (resId >= 0 && bitmap == null) {
 			setImageResource(resId);
 		}
-		
+
 		super.onAttachedToWindow();
 	}
 
 	@Override
 	protected void onDetachedFromWindow() {
-		if(recycle && bitmap != null && !bitmap.isRecycled()) {
+		if (recycle && bitmap != null && !bitmap.isRecycled()) {
 			bitmap.recycle();
 			bitmap = null;
 		}
@@ -207,33 +214,34 @@ public class GestureImageView extends View  {
 		this.bitmap = image;
 		init();
 	}
-	
+
 	public void setImageResource(int id) {
-		if(this.bitmap != null) {
+		if (this.bitmap != null) {
 			this.bitmap.recycle();
 		}
-		if(id >= 0) {
+		if (id >= 0) {
 			this.recycle = true;
 			this.resId = id;
-			this.bitmap = BitmapFactory.decodeResource(getContext().getResources(), id);
+			this.bitmap = BitmapFactory.decodeResource(getContext()
+					.getResources(), id);
 			init();
 		}
 	}
-	
+
 	protected void init() {
 		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setAntiAlias(true);
-		paint.setFilterBitmap(true);		
+		paint.setFilterBitmap(true);
 	}
-	
+
 	public int getImageWidth() {
 		return (bitmap == null) ? 0 : bitmap.getWidth();
 	}
 
 	public int getImageHeight() {
-		return  (bitmap == null) ? 0 : bitmap.getHeight();
+		return (bitmap == null) ? 0 : bitmap.getHeight();
 	}
-	
+
 	public void setPosition(float x, float y) {
 		this.x = x;
 		this.y = y;
@@ -245,26 +253,26 @@ public class GestureImageView extends View  {
 
 	public void setMinScale(float min) {
 		this.minScale = min;
-		if(gestureImageViewTouchListener != null) {
+		if (gestureImageViewTouchListener != null) {
 			gestureImageViewTouchListener.setMinScale(min);
 		}
 	}
-	
+
 	public void setMaxScale(float max) {
 		this.maxScale = max;
-		if(gestureImageViewTouchListener != null) {
+		if (gestureImageViewTouchListener != null) {
 			gestureImageViewTouchListener.setMaxScale(max);
 		}
 	}
-	
+
 	public void setScale(float scale) {
 		scaleAdjust = scale;
 	}
-	
+
 	public float getScale() {
 		return scaleAdjust;
 	}
-	
+
 	public float getX() {
 		return x;
 	}
@@ -283,12 +291,13 @@ public class GestureImageView extends View  {
 		scaleAdjust = startingScale;
 		redraw();
 	}
-	
+
 	public void setRotation(float rotation) {
 		this.rotation = rotation;
 	}
 
-	public void setGestureImageViewListener(GestureImageViewListener pinchImageViewListener) {
+	public void setGestureImageViewListener(
+			GestureImageViewListener pinchImageViewListener) {
 		this.gestureImageViewListener = pinchImageViewListener;
 	}
 
