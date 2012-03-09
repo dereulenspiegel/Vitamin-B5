@@ -281,6 +281,9 @@ public class AddLocationFragment extends MyAbstractFragment implements
 
 		} else if (requestCode == 0) {
 			Log.d("UTM", "Received no success, setting image to null");
+			if(currentImage.exists()){
+				currentImage.delete();
+			}
 			currentImage = null;
 		}
 	}
