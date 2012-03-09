@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -30,13 +31,14 @@ public class LocationDetailFragment extends MyAbstractFragment implements
 
 	}
 
+	private final static int IMAGE_MAX_SIZE = 120000;
 	private TextView textViewName;
 	private TextView textViewCoordinates;
 	private TextView textViewDescription;
 	private ImageView imageView;
 
 	private LocationDatabase db;
-	
+
 	private TargetLocation location;
 
 	private Uri imageUri;
@@ -75,7 +77,7 @@ public class LocationDetailFragment extends MyAbstractFragment implements
 	}
 
 	public void updateContent(long id) {
-		if(location != null && location.getId() == id){
+		if (location != null && location.getId() == id) {
 			return;
 		}
 		db.open();
@@ -94,10 +96,48 @@ public class LocationDetailFragment extends MyAbstractFragment implements
 			imageView.setVisibility(View.GONE);
 		} else if (imageUri == null || !imageUri.equals(uri)) {
 			imageUri = uri;
-			image = BitmapFactory.decodeFile(uri.toString());
-			imageView.setImageBitmap(image);
-			imageView.setVisibility(View.VISIBLE);
+			Log.d("UTM", "Showing image with uri: " + uri.toString());
+
+			setImage(uri.toString());
 		}
+	}
+
+	private void setImage(String path) {
+		BitmapFactory.Options o = new BitmapFactory.Options();
+		BitmapFactory.decodeFile(path, o);
+		int scale = 1;
+		while ((o.outWidth * o.outHeight) * (1 / Math.pow(scale, 2)) > IMAGE_MAX_SIZE) {
+			scale++;
+		}
+		Bitmap b = null;
+		if (scale > 1) {
+			scale--;
+			Log.d("UTM", "Scaling image with factor " + scale);
+			// scale to max possible inSampleSize that still yields an image
+			// larger than target
+			o = new BitmapFactory.Options();
+			o.inSampleSize = scale;
+			b = BitmapFactory.decodeFile(path, o);
+			int height = b.getHeight();
+			int width = b.getWidth();
+
+			double y = Math.sqrt(IMAGE_MAX_SIZE / (((double) width) / height));
+			double x = (y / height) * width;
+
+			Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, (int) x,
+					(int) y, true);
+			b.recycle();
+			b = scaledBitmap;
+
+			System.gc();
+
+		} else {
+			b = BitmapFactory.decodeFile(path);
+		}
+		image = b;
+		imageView.setImageBitmap(image);
+
+		imageView.setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -166,7 +206,7 @@ public class LocationDetailFragment extends MyAbstractFragment implements
 
 	@Override
 	public void onDestroy() {
-		if(image != null){
+		if (image != null) {
 			image.recycle();
 			image = null;
 		}

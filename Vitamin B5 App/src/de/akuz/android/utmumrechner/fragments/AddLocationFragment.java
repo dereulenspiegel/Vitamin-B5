@@ -274,9 +274,6 @@ public class AddLocationFragment extends MyAbstractFragment implements
 		Log.d("UTM", "Received result for Camera action. ResultCode "
 				+ resultCode);
 		if (resultCode == Activity.RESULT_OK && requestCode == 0) {
-			if (data != null) {
-				Log.d("UTM", "image intent: " + data.toString());
-			}
 			buttonTakePicture.setEnabled(false);
 
 		} else if (requestCode == 0) {
