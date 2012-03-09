@@ -26,7 +26,7 @@
         <activity android:name="ListTargetLocations"></activity>
         <activity android:name="AddLocationActivity" android:windowSoftInputMode="stateVisible"></activity>
         <activity android:name="LocationDetailActivity"></activity>
-        <activity android:name="ImageViewActivity"></activity>
+        <activity android:name="ImageViewActivity" android:hardwareAccelerated="false"></activity>
     </application>
 
 </manifest>
