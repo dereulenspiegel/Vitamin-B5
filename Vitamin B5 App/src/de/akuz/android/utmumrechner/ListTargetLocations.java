@@ -2,12 +2,14 @@ package de.akuz.android.utmumrechner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListAdapter;
 import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
 import de.akuz.android.utmumrechner.data.TargetLocation;
 import de.akuz.android.utmumrechner.fragments.ImageViewFragment;
 import de.akuz.android.utmumrechner.fragments.LocationDetailFragment;
 import de.akuz.android.utmumrechner.fragments.LocationListFragment;
+import de.akuz.android.utmumrechner.fragments.LocationListFragment.FragmentState;
 
 public class ListTargetLocations extends MyAbstractActivity implements LocationListFragment.Callback, LocationDetailFragment.LocationDetailListener {
 	
@@ -27,18 +29,12 @@ public class ListTargetLocations extends MyAbstractActivity implements LocationL
 	private void initUIElements(){
 		locationDetailFragment = (LocationDetailFragment)getSupportFragmentManager().findFragmentById(R.id.details_fragment);
 		locationListFragment = (LocationListFragment)getSupportFragmentManager().findFragmentById(R.id.list_fragment);
+		locationListFragment.setFragmentState((FragmentState) getLastCustomNonConfigurationInstance());
 		
 		locationListFragment.addCallback(this);
 		
 		if(locationDetailFragment != null){
 			locationDetailFragment.setListener(this);
-		}
-		
-		ListAdapter adapter = locationListFragment.getListAdapter();
-		if(adapter.getCount() > 0 && locationDetailFragment != null){
-			TargetLocation firstLocation = (TargetLocation) adapter.getItem(0);
-			currentShownId = firstLocation.getId();
-			locationDetailFragment.updateContent(firstLocation.getId());
 		}
 	}
 
@@ -75,6 +71,23 @@ public class ListTargetLocations extends MyAbstractActivity implements LocationL
 	public void showOnMap(TargetLocation location) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		Log.d("UTM","Saving fragment state");
+		return locationListFragment.getCurrentFragmentState();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		ListAdapter adapter = locationListFragment.getListAdapter();
+		if(adapter.getCount() > 0 && locationDetailFragment != null){
+			TargetLocation firstLocation = (TargetLocation) adapter.getItem(0);
+			currentShownId = firstLocation.getId();
+			locationDetailFragment.updateContent(firstLocation.getId());
+		}
 	}
 
 }

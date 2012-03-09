@@ -60,10 +60,15 @@ public class TargetLocationView extends LinearLayout implements OnCheckedChangeL
 		currentLocation = location;
 		setName(location.getName());
 		setUTM(location.getMgrsCoordinate());
+		checkBox.setChecked(location.isSelected());
 	}
 	
 	public boolean isChecked(){
 		return checkBox.isChecked();
+	}
+	
+	public void setChecked(boolean checked){
+		checkBox.setChecked(checked);
 	}
 
 	@Override

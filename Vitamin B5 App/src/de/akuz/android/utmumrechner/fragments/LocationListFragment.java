@@ -22,9 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ShareActionProvider;
 
-import com.actionbarsherlock.view.ActionProvider;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -62,41 +60,21 @@ public class LocationListFragment extends MyAbstractFragment implements
 			}
 		}
 
+		@Override
+		public long getItemId(int position) {
+			return getItem(position).getId();
+		}
+
+		@Override
+		public boolean hasStableIds() {
+			return true;
+		}
+
 	}
 
-	public static class ShareActionProviderCompat extends ActionProvider {
-
-		private ShareActionProvider mShareActionProvider;
-
-		public ShareActionProviderCompat(Context context) {
-			super(context);
-			mShareActionProvider = new ShareActionProvider(context);
-		}
-
-		@Override
-		public View onCreateActionView() {
-			return mShareActionProvider.onCreateActionView();
-		}
-
-		@Override
-		public boolean onPerformDefaultAction() {
-			return mShareActionProvider.onPerformDefaultAction();
-		}
-
-		@Override
-		public boolean hasSubMenu() {
-			return mShareActionProvider.hasSubMenu();
-		}
-
-		public void setOnShareTargetSelectedListener(
-				ShareActionProvider.OnShareTargetSelectedListener listener) {
-			mShareActionProvider.setOnShareTargetSelectedListener(listener);
-		}
-
-		public void setShareIntent(Intent shareIntent) {
-			mShareActionProvider.setShareIntent(shareIntent);
-		}
-
+	public static class FragmentState {
+		public int listPosition;
+		public List<Long> markedPositions;
 	}
 
 	public interface Callback {
@@ -108,7 +86,7 @@ public class LocationListFragment extends MyAbstractFragment implements
 	private LocationDatabase db;
 
 	private ListView listView;
-	private ListAdapter adapter;
+	private LocationListAdapter adapter;
 
 	private List<Callback> callbacks;
 
@@ -120,23 +98,36 @@ public class LocationListFragment extends MyAbstractFragment implements
 
 	private ProgressDialog exportProgressDialog;
 
+	private FragmentState lastState;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		callbacks = new ArrayList<Callback>();
 		db = new LocationDatabase(this.getActivity());
-		db.open();
-		adapter = new LocationListAdapter(this.getActivity(), 0, 0,
-				db.getAllLocations());
-		db.close();
+
 		setContentView(R.layout.fragment_location_list);
 		setHasOptionsMenu(true);
+		db.open();
+		List<TargetLocation> locations = db.getAllLocations();
+		db.close();
+		if (lastState != null) {
+			for (TargetLocation l : locations) {
+				if(lastState.markedPositions.contains(l.getId())){
+					Log.d("UTM","!!!!!!!Setting selection");
+					l.setSelected(true);
+				}
+			}
+		}
+		adapter = new LocationListAdapter(this.getActivity(), 0, 0, locations);
 	}
 
 	@Override
 	protected void initUIElements() {
+		Log.d("UTM", "Init UI Elements");
 		listView = (ListView) findViewById(R.id.listViewLoactions);
 		listView.setOnItemClickListener(this);
+		
 		listView.setAdapter(adapter);
 	}
 
@@ -185,13 +176,13 @@ public class LocationListFragment extends MyAbstractFragment implements
 		db.close();
 		listView.setAdapter(adapter);
 	}
-	
-	private void deleteImage(String path){
-		if(StringUtils.isEmtpy(path)){
+
+	private void deleteImage(String path) {
+		if (StringUtils.isEmtpy(path)) {
 			return;
 		}
 		File image = new File(path);
-		if(image.exists()){
+		if (image.exists()) {
 			image.delete();
 		}
 	}
@@ -294,35 +285,90 @@ public class LocationListFragment extends MyAbstractFragment implements
 	public void onResume() {
 		super.onResume();
 		db.open();
-		adapter = new LocationListAdapter(this.getActivity(), 0, 0,
-				db.getAllLocations());
+		List<TargetLocation> locations = db.getAllLocations();
 		db.close();
+		if (lastState != null) {
+			for (TargetLocation l : locations) {
+				if(lastState.markedPositions.contains(l.getId())){
+					Log.d("UTM","!!!!!!!Setting selection");
+					l.setSelected(true);
+				}
+			}
+		}
+		adapter = new LocationListAdapter(this.getActivity(), 0, 0, locations);
 		listView.setAdapter(adapter);
+		lastState = null;
 	}
-	
-	private Dialog createDeleteDialog(){
+
+	private Dialog createDeleteDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setMessage(R.string.really_delete_locations);
 		builder.setCancelable(true);
-		builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				
-			}
-		});
-		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				deleteSelectedLocations();
-				dialog.dismiss();
-				
-			}
-		});
-		
+		builder.setNegativeButton(R.string.No,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+
+					}
+				});
+		builder.setPositiveButton(R.string.yes,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						deleteSelectedLocations();
+						dialog.dismiss();
+
+					}
+				});
+
 		return builder.create();
+	}
+
+	public FragmentState getCurrentFragmentState() {
+		FragmentState state = new FragmentState();
+		state.listPosition = listView.getFirstVisiblePosition();
+		List<Long> markedPositions = new ArrayList<Long>();
+		for (int i = 0; i < listView.getCount(); i++) {
+			TargetLocation l = (TargetLocation) listView.getItemAtPosition(i);
+			if (l.isSelected()) {
+				markedPositions.add(l.getId());
+			}
+		}
+		state.markedPositions = markedPositions;
+		return state;
+	}
+
+	public void restoreState(FragmentState state) {
+		if (state != null && listView != null && adapter != null) {
+			Log.d("UTM", "Restoring fragment state");
+			listView.setSelection(state.listPosition);
+			db.open();
+			List<TargetLocation> locations = db.getAllLocations();
+			db.close();
+			if (state != null) {
+				for (TargetLocation l : locations) {
+					if(state.markedPositions.contains(l.getId())){
+						Log.d("UTM","!!!!!!!Setting selection");
+						l.setSelected(true);
+					}
+				}
+			}
+			adapter = new LocationListAdapter(this.getActivity(), 0, 0, locations);
+			
+
+			listView.setAdapter(adapter);
+			lastState = null;
+		}
+	}
+
+	public void setFragmentState(FragmentState state) {
+		if (state != null) {
+			Log.d("UTM", "Fragment setting last state");
+			lastState = state;
+		}
 	}
 
 }
