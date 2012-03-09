@@ -34,7 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddLocationFragment extends MyAbstractFragment implements
-LocationListener, GpsStatus.Listener, OnClickListener{
+		LocationListener, GpsStatus.Listener, OnClickListener {
 
 	private LocationManager locationManager;
 
@@ -90,7 +90,8 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 		buttonTakePicture = (Button) findViewById(R.id.buttonTakePicture);
 		buttonTakePicture.setOnClickListener(this);
 		clearFieldsAndResetAverages();
-		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+		locationManager = (LocationManager) getActivity().getSystemService(
+				Context.LOCATION_SERVICE);
 		enableUseOfCurrentPosition();
 	}
 
@@ -177,8 +178,8 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 			GpsStatus status = locationManager.getGpsStatus(null);
 			Iterable<GpsSatellite> satellites = status.getSatellites();
 			int satellitesInFix = 0;
-			for(GpsSatellite s : satellites){
-				if(s.usedInFix()){
+			for (GpsSatellite s : satellites) {
+				if (s.usedInFix()) {
 					satellitesInFix++;
 				}
 			}
@@ -206,8 +207,9 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 		if (StringUtils.isEmtpy(description)
 				|| StringUtils.isEmtpy(coordinates)
 				|| StringUtils.isEmtpy(name)) {
-			Toast.makeText(this.getActivity(), R.string.error_please_provide_all_info,
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(this.getActivity(),
+					R.string.error_please_provide_all_info, Toast.LENGTH_LONG)
+					.show();
 			return;
 		}
 		db.open();
@@ -234,8 +236,9 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 
 	private void takePicture() {
 		if (StringUtils.isEmtpy(textViewCurrentPosition.getText().toString())) {
-			Toast.makeText(this.getActivity(), R.string.error_coordinate_required,
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(this.getActivity(),
+					R.string.error_coordinate_required, Toast.LENGTH_LONG)
+					.show();
 			return;
 		}
 		Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -254,7 +257,8 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 			if (!imagePath.exists()) {
 				imagePath.mkdirs();
 			}
-			imagePath = new File(imagePath, StringUtils.hashSha1(coordinates)+".jpg");
+			imagePath = new File(imagePath, StringUtils.hashSha1(coordinates)
+					+ ".jpg");
 			currentImage = imagePath;
 			return imagePath;
 		} catch (NoSuchAlgorithmException e) {
@@ -270,11 +274,13 @@ LocationListener, GpsStatus.Listener, OnClickListener{
 		Log.d("UTM", "Received result for Camera action. ResultCode "
 				+ resultCode);
 		if (resultCode == Activity.RESULT_OK && requestCode == 0) {
-			Log.d("UTM", "image intent: " + data.toString());
+			if (data != null) {
+				Log.d("UTM", "image intent: " + data.toString());
+			}
 			buttonTakePicture.setEnabled(false);
-			
+
 		} else if (requestCode == 0) {
-			Log.d("UTM","Received no success, setting image to null");
+			Log.d("UTM", "Received no success, setting image to null");
 			currentImage = null;
 		}
 	}

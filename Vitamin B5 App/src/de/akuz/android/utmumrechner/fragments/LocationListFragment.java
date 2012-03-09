@@ -31,6 +31,7 @@ import de.akuz.android.utmumrechner.R;
 import de.akuz.android.utmumrechner.data.LocationDatabase;
 import de.akuz.android.utmumrechner.data.TargetLocation;
 import de.akuz.android.utmumrechner.utils.LocationExporter;
+import de.akuz.android.utmumrechner.utils.StringUtils;
 import de.akuz.android.utmumrechner.views.TargetLocationView;
 
 public class LocationListFragment extends MyAbstractFragment implements
@@ -170,6 +171,7 @@ public class LocationListFragment extends MyAbstractFragment implements
 	public void deleteLocations(List<TargetLocation> locations) {
 		db.open();
 		for (TargetLocation t : locations) {
+			deleteImage(t.getPictureUrl());
 			db.deleteLocation(t);
 			for (Callback c : callbacks) {
 				c.itemDeleted(t.getId());
@@ -179,6 +181,16 @@ public class LocationListFragment extends MyAbstractFragment implements
 				db.getAllLocations());
 		db.close();
 		listView.setAdapter(adapter);
+	}
+	
+	private void deleteImage(String path){
+		if(StringUtils.isEmtpy(path)){
+			return;
+		}
+		File image = new File(path);
+		if(image.exists()){
+			image.delete();
+		}
 	}
 
 	public List<TargetLocation> getSelectedLocations() {
