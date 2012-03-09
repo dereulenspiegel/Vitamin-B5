@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -229,7 +232,7 @@ public class LocationListFragment extends MyAbstractFragment implements
 		int id = item.getItemId();
 		switch (id) {
 		case MENU_REMOVE_SELECTED_LOCATIONS:
-			deleteSelectedLocations();
+			createDeleteDialog().show();
 			return true;
 		case MENU_SHARE_SELECTED_LOCATIONS:
 			shareSelectedLocations();
@@ -295,6 +298,31 @@ public class LocationListFragment extends MyAbstractFragment implements
 				db.getAllLocations());
 		db.close();
 		listView.setAdapter(adapter);
+	}
+	
+	private Dialog createDeleteDialog(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(R.string.really_delete_locations);
+		builder.setCancelable(true);
+		builder.setNegativeButton(R.string.No, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				
+			}
+		});
+		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				deleteSelectedLocations();
+				dialog.dismiss();
+				
+			}
+		});
+		
+		return builder.create();
 	}
 
 }
