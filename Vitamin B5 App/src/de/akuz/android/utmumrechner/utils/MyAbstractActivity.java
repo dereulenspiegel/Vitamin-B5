@@ -2,6 +2,7 @@ package de.akuz.android.utmumrechner.utils;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -16,9 +17,8 @@ import de.akuz.android.utmumrechner.UTMUmrechnerActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
-public class MyAbstractActivity extends FragmentActivity implements
+public class MyAbstractActivity extends SherlockFragmentActivity implements
 		OnNavigationListener {
 
 	@Override

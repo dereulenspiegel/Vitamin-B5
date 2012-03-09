@@ -1,12 +1,13 @@
 package de.akuz.android.utmumrechner.fragments;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class MyAbstractFragment extends Fragment {
+public abstract class MyAbstractFragment extends SherlockFragment {
 	
 	private int layoutId;
 	
