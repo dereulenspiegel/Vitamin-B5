@@ -199,7 +199,6 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		Log.d("UTM","Item "+position+" selected");
 		switch(position){
 		case 0:
 			showParseGPSFragment(new ParseDDCoordinatesFragment());
