@@ -1,8 +1,10 @@
-package de.akuz.android.utmumrechner.utils;
+package de.akuz.android.utmumrechner.test.utils;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
+
+import de.akuz.android.utmumrechner.utils.CoordinateUtils;
 
 import android.location.Location;
 import android.test.AndroidTestCase;
