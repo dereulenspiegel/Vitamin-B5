@@ -6,7 +6,7 @@
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="14"/>
 
-    <instrumentation android:name="pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+    <instrumentation android:name="pl.polidea.instrumentation.PolideaInstrumentationTestRunner2"
                      android:targetPackage="de.akuz.android.utmumrechner"
                      android:label="Tests for Vitamin B5"/>
 

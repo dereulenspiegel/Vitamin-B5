@@ -82,7 +82,7 @@
 	<!-- version-tag: 1 -->
 	<import file="${sdk.dir}/tools/ant/build.xml" />
 
-	<target name="pull-test-result" depends="test">
+	<target name="pull-test-result">
 		<exec executable="${adb}" failonerror="true" dir="junit-results">
 			<arg line="${adb.device.arg}" />
 			<arg value="pull" />
