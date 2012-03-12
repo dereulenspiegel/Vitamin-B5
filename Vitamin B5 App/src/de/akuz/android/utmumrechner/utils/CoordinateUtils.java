@@ -1,5 +1,7 @@
 package de.akuz.android.utmumrechner.utils;
 
+import java.text.DecimalFormat;
+
 import android.location.Location;
 import uk.me.jstott.jcoord.LatLng;
 import uk.me.jstott.jcoord.MGRSRef;
@@ -9,6 +11,8 @@ import uk.me.jstott.jcoord.datum.WGS84Datum;
 public class CoordinateUtils {
 
 	public final static String LOCATION_UTILS_PROVIDER = "calculatedLocation";
+	
+	private final static DecimalFormat decFormat = new DecimalFormat("###.####");
 
 	public static String latLonToMGRS(double latitude, double longitude) {
 		LatLng gps = new LatLng(latitude, longitude);
@@ -67,5 +71,34 @@ public class CoordinateUtils {
 		l.setLongitude(longitude);
 		return l;
 	}
-
+	
+	public static String formatDD(double in){
+		return String.valueOf(in);
+	}
+	
+	public static String formatDMM(double in){
+		int fullDegrees = (int)in;
+		double minutes = in - fullDegrees;
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(fullDegrees);
+		buffer.append(" ");
+		buffer.append(decFormat.format(minutes * 60.0d));
+		return buffer.toString();
+	}
+	
+	public static String formatDMS(double in){
+		int fullDegrees = (int)in;
+		double minutesTemp = in - fullDegrees;
+		int minutes = (int)minutesTemp;
+		double seconds = minutesTemp - minutes;
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(fullDegrees);
+		buffer.append(" ");
+		buffer.append(minutes);
+		buffer.append(" ");
+		buffer.append(decFormat.format(seconds * 60.0d));
+		return buffer.toString();
+		
+	}
 }
