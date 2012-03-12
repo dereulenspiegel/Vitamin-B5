@@ -88,16 +88,16 @@ public class CoordinateUtils {
 	
 	public static String formatDMS(double in){
 		int fullDegrees = (int)in;
-		double minutesTemp = in - fullDegrees;
+		double minutesTemp = (in - fullDegrees) * 60.0d;
 		int minutes = (int)minutesTemp;
-		double seconds = minutesTemp - minutes;
+		int seconds = (int) Math.round(((minutesTemp - minutes)*60.0d));
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(fullDegrees);
 		buffer.append(" ");
 		buffer.append(minutes);
 		buffer.append(" ");
-		buffer.append(decFormat.format(seconds * 60.0d));
+		buffer.append(seconds);
 		return buffer.toString();
 		
 	}
