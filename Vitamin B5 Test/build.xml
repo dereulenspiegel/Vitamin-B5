@@ -77,7 +77,7 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
 	<property name="test.runner" value="pl.polidea.instrumentation.PolideaInstrumentationTestRunner" />
-	<setup import="no" />
+	<!-- <setup import="no" /> -->
 
 	<!-- version-tag: 1 -->
 	<import file="${sdk.dir}/tools/ant/build.xml" />
