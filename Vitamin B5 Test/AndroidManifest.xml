@@ -9,9 +9,6 @@
     <instrumentation android:name="pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
                      android:targetPackage="de.akuz.android.utmumrechner"
                      android:label="Tests for Vitamin B5"/>
-    <instrumentation
-        android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="de.akuz.android.utmumrechner" />
 
     <application
         android:icon="@drawable/ic_launcher"
