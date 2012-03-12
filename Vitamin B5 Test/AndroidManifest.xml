@@ -16,4 +16,8 @@
         <uses-library android:name="android.test.runner" />
     </application>
 
+    <instrumentation
+        android:name="com.neenbedankt.android.test.InstrumentationTestRunner"
+        android:targetPackage="de.akuz.android.utmumrechner" />
+
 </manifest>
