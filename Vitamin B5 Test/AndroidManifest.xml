@@ -6,7 +6,7 @@
 
     <uses-sdk android:minSdkVersion="7" />
 
-    <instrumentation
+    <instrumentation android:name="com.neenbedankt.android.test.InstrumentationTestRunner" android:targetPackage="de.akuz.android.utmumrechner" /><instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="de.akuz.android.utmumrechner" />
 
@@ -16,8 +16,6 @@
         <uses-library android:name="android.test.runner" />
     </application>
 
-    <instrumentation
-        android:name="com.neenbedankt.android.test.InstrumentationTestRunner"
-        android:targetPackage="de.akuz.android.utmumrechner" />
+    
 
 </manifest>
