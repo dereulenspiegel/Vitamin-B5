@@ -13,7 +13,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class Center extends MyAbstractActivity implements LocationListener {
+public class CenterActivity extends MyAbstractActivity implements LocationListener {
 
 	private TextView textViewCoordinates;
 	private TextView textViewAccuracy;

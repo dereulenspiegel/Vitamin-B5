@@ -11,7 +11,7 @@ import de.akuz.android.utmumrechner.fragments.LocationDetailFragment;
 import de.akuz.android.utmumrechner.fragments.LocationListFragment;
 import de.akuz.android.utmumrechner.fragments.LocationListFragment.FragmentState;
 
-public class ListTargetLocations extends MyAbstractActivity implements LocationListFragment.Callback, LocationDetailFragment.LocationDetailListener {
+public class ListTargetLocationsActivity extends MyAbstractActivity implements LocationListFragment.Callback, LocationDetailFragment.LocationDetailListener {
 	
 	private LocationListFragment locationListFragment;
 	private LocationDetailFragment locationDetailFragment;

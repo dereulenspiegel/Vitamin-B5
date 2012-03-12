@@ -8,9 +8,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.akuz.android.utmumrechner.AddLocationActivity;
-import de.akuz.android.utmumrechner.CalculateDistance;
-import de.akuz.android.utmumrechner.Center;
-import de.akuz.android.utmumrechner.ListTargetLocations;
+import de.akuz.android.utmumrechner.CalculateDistanceActivity;
+import de.akuz.android.utmumrechner.CenterActivity;
+import de.akuz.android.utmumrechner.ListTargetLocationsActivity;
 import de.akuz.android.utmumrechner.R;
 
 import de.akuz.android.utmumrechner.UTMUmrechnerActivity;
@@ -36,16 +36,16 @@ public class MyAbstractActivity extends SherlockFragmentActivity implements
 			startMyActivity(UTMUmrechnerActivity.class);
 			return true;
 		case R.id.action_menu_distance:
-			startMyActivity(CalculateDistance.class);
+			startMyActivity(CalculateDistanceActivity.class);
 			return true;
 		case R.id.action_menu_list_locations:
-			startMyActivity(ListTargetLocations.class);
+			startMyActivity(ListTargetLocationsActivity.class);
 			return true;
 		case R.id.action_menu_add_location:
 			startMyActivity(AddLocationActivity.class);
 			return true;
 		case android.R.id.home:
-			startMyActivity(Center.class);
+			startMyActivity(CenterActivity.class);
 		}
 
 		return false;

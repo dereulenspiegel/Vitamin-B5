@@ -4,7 +4,7 @@ import de.akuz.android.utmumrechner.utils.MyAbstractActivity;
 
 import android.os.Bundle;
 
-public class CalculateDistance extends MyAbstractActivity {
+public class CalculateDistanceActivity extends MyAbstractActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
