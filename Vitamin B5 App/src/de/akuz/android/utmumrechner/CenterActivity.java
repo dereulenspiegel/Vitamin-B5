@@ -27,6 +27,7 @@ public class CenterActivity extends MyAbstractActivity implements LocationListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		locationListenerWrapper = new BestLocationListenerWrapper(this, this);
+		locationListenerWrapper.enableLocationUpdates();
 		setContentView(R.layout.center);
 		initUIElements();
 	}

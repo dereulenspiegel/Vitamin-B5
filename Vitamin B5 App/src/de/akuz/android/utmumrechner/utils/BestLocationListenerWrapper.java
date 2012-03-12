@@ -15,15 +15,18 @@ public class BestLocationListenerWrapper implements LocationListener {
 	
 	private final static int TWO_MINUTES = 1000*60*2;
 	
+	private long timeInterval;
+	private int minDistance;
+	
 	public BestLocationListenerWrapper(Context context, LocationListener listener){
 		this(context,listener,2000,20);
 	}
 	
 	public BestLocationListenerWrapper(Context context, LocationListener listener, long timeInterval, int minDistance){
 		this.listener = listener;
+		this.timeInterval = timeInterval;
+		this.minDistance = minDistance;
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeInterval, minDistance, this);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeInterval, minDistance, this);
 	}
 
 	@Override
@@ -102,6 +105,15 @@ public class BestLocationListenerWrapper implements LocationListener {
 		Location lastNetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		Location lastGPSLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		return isBetterLocation(lastNetworkLocation, lastGPSLocation)?lastNetworkLocation:lastGPSLocation;
+	}
+	
+	public void disableLocationUpdates(){
+		locationManager.removeUpdates(this);
+	}
+	
+	public void enableLocationUpdates(){
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeInterval, minDistance, this);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeInterval, minDistance, this);
 	}
 
 }

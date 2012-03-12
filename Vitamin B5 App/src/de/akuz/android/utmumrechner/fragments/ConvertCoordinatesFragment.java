@@ -1,40 +1,49 @@
 package de.akuz.android.utmumrechner.fragments;
 
-import uk.me.jstott.jcoord.LatLng;
-import uk.me.jstott.jcoord.MGRSRef;
-import uk.me.jstott.jcoord.UTMRef;
-import uk.me.jstott.jcoord.datum.WGS84Datum;
-import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Spinner;
 import de.akuz.android.utmumrechner.R;
+import de.akuz.android.utmumrechner.fragments.subfragments.AbstractParseGPSCoordinatesFragment;
+import de.akuz.android.utmumrechner.fragments.subfragments.ParseDDCoordinatesFragment;
+import de.akuz.android.utmumrechner.fragments.subfragments.ParseDMMCoordinatesFragment;
+import de.akuz.android.utmumrechner.fragments.subfragments.ParseDMSCoordinatesFragment;
+import de.akuz.android.utmumrechner.fragments.subfragments.AbstractParseGPSCoordinatesFragment.CoordinateChangedListener;
+import de.akuz.android.utmumrechner.utils.BestLocationListenerWrapper;
+import de.akuz.android.utmumrechner.utils.CoordinateUtils;
 
 public class ConvertCoordinatesFragment extends MyAbstractFragment implements
-		OnCheckedChangeListener, LocationListener {
+		OnCheckedChangeListener, LocationListener, CoordinateChangedListener,
+		OnItemSelectedListener {
 
 	private EditText editUTM;
-	private EditText editLatitude;
-	private EditText editLongitude;
 	private CheckBox useCurrentPosition;
 
-	private TextWatcher latitudeTextWatcher;
-	private TextWatcher longitudeTextWatcher;
+	private Spinner gpsFormatSpinner;
+
 	private TextWatcher utmTextWatcher;
 
-	private LocationManager locationManager;
+	private BestLocationListenerWrapper locationWrapper;
 
-	private double longitude;
-	private double latitude;
+	private Location location;
+	
+	private AbstractParseGPSCoordinatesFragment currentParseGPSCoordinatesFragment;
+	
+	private FragmentManager fragmentManager;
 
 	private String utm;
 
@@ -42,76 +51,29 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		locationManager = (LocationManager) getActivity().getSystemService(
-				Context.LOCATION_SERVICE);
+		fragmentManager = getFragmentManager();
+		locationWrapper = new BestLocationListenerWrapper(getActivity(), this);
 
 		setContentView(R.layout.fragment_convert_coordinates);
 	}
 
 	@Override
 	protected void initUIElements() {
-		editLatitude = (EditText) findViewById(R.id.editTextLatitude);
-		editLongitude = (EditText) findViewById(R.id.editTextLongtitude);
 		editUTM = (EditText) findViewById(R.id.editTextUTMCoordinates);
+		gpsFormatSpinner = (Spinner) findViewById(R.id.spinnerGPSFormat);
+		ArrayAdapter adapter = ArrayAdapter.createFromResource(
+				this.getActivity(), R.array.gps_formats,
+				android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		gpsFormatSpinner.setAdapter(adapter);
+		gpsFormatSpinner.setOnItemSelectedListener(this);
+		
+		currentParseGPSCoordinatesFragment = new ParseDDCoordinatesFragment();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.add(R.id.gpsInputPlaceholder,currentParseGPSCoordinatesFragment);
+		transaction.commit();
+		
 		useCurrentPosition = (CheckBox) findViewById(R.id.checkBoxUseCurrentPosition);
-
-		latitudeTextWatcher = new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				try {
-					latitude = Double.parseDouble(editLatitude.getText()
-							.toString());
-
-				} catch (NumberFormatException e) {
-					latitude = 0;
-				}
-				recalculateUTM();
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-
-		longitudeTextWatcher = new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				try {
-					longitude = Double.parseDouble(editLongitude.getText()
-							.toString());
-				} catch (NumberFormatException e) {
-					longitude = 0;
-				}
-				recalculateUTM();
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
-			}
-		};
 
 		utmTextWatcher = new TextWatcher() {
 
@@ -126,22 +88,31 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
+				// Ignore
 
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
+				// Ignore
 
 			}
 		};
 
-		editLatitude.addTextChangedListener(latitudeTextWatcher);
-		editLongitude.addTextChangedListener(longitudeTextWatcher);
 		editUTM.addTextChangedListener(utmTextWatcher);
 
 		useCurrentPosition.setOnCheckedChangeListener(this);
+	}
+	
+	private void showParseGPSFragment(AbstractParseGPSCoordinatesFragment fragment){
+		currentParseGPSCoordinatesFragment.removeListener(this);
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(R.id.gpsInputPlaceholder,fragment);
+		transaction.commit();
+		currentParseGPSCoordinatesFragment = fragment;
+		currentParseGPSCoordinatesFragment.updateFields(location);
+		currentParseGPSCoordinatesFragment.setEnabled(!useCurrentPosition.isChecked());
+		currentParseGPSCoordinatesFragment.addListener(this);
 	}
 
 	@Override
@@ -155,34 +126,22 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 	}
 
 	private void enableUseOfCurrentPosition() {
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		criteria.setAltitudeRequired(false);
-		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(false);
-		criteria.setPowerRequirement(Criteria.POWER_HIGH);
-		criteria.setSpeedRequired(false);
+		locationWrapper.enableLocationUpdates();
 
-		String bestProvider = locationManager.getBestProvider(criteria, true);
-		locationManager.requestLocationUpdates(bestProvider, 2000, 0, this);
-
-		editLatitude.setEnabled(false);
-		editLongitude.setEnabled(false);
 		editUTM.setEnabled(false);
+		currentParseGPSCoordinatesFragment.setEnabled(false);
 	}
 
 	private void disableUseOfCurrentPosition() {
-		locationManager.removeUpdates(this);
+		locationWrapper.disableLocationUpdates();
 
-		editLatitude.setEnabled(true);
-		editLongitude.setEnabled(true);
 		editUTM.setEnabled(true);
+		currentParseGPSCoordinatesFragment.setEnabled(true);
 	}
 
 	@Override
 	public void onLocationChanged(Location location) {
-		latitude = location.getLatitude();
-		longitude = location.getLongitude();
+		this.location = location;
 
 		updateGPSFields();
 		recalculateUTM();
@@ -190,11 +149,7 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 
 	private void recalculateUTM() {
 		try {
-			LatLng gps = new LatLng(latitude, longitude);
-			gps.toDatum(WGS84Datum.getInstance());
-			UTMRef utmRef = gps.toUTMRef();
-			MGRSRef mgrsRef = new MGRSRef(utmRef);
-			utm = mgrsRef.toString();
+			utm =  CoordinateUtils.locationToMGRS(location);
 			editUTM.removeTextChangedListener(utmTextWatcher);
 			editUTM.setText(utm);
 			editUTM.addTextChangedListener(utmTextWatcher);
@@ -205,17 +160,8 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 
 	private void recalculateGPS() {
 		try {
-			utm = editUTM.getText().toString().toUpperCase();
-			Log.d("UTM", "Recalculating GPS coordinates: " + utm);
-			MGRSRef mgrsRef = new MGRSRef(utm);
-			LatLng latlng = mgrsRef.toLatLng();
-			latitude = latlng.getLatitude();
-			longitude = latlng.getLongitude();
-			editLatitude.removeTextChangedListener(latitudeTextWatcher);
-			editLongitude.removeTextChangedListener(longitudeTextWatcher);
-			updateGPSFields();
-			editLatitude.addTextChangedListener(latitudeTextWatcher);
-			editLongitude.addTextChangedListener(longitudeTextWatcher);
+			location = CoordinateUtils.mgrsToLocation(utm);
+			currentParseGPSCoordinatesFragment.updateFields(location);
 		} catch (IllegalArgumentException e) {
 			Log.w("UTM", "UTM String is invalid", e);
 		}
@@ -223,32 +169,59 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 	}
 
 	private void updateGPSFields() {
-		editLatitude.setText(String.valueOf(latitude));
-		editLongitude.setText(String.valueOf(longitude));
+		currentParseGPSCoordinatesFragment.updateFields(location);
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
+		// Ignore
 
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
+		// Ignore
 
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		// Ignore
 
 	}
 
 	@Override
 	public void onDestroy() {
-		locationManager.removeUpdates(this);
+		locationWrapper.disableLocationUpdates();
 		super.onDestroy();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		Log.d("UTM","Item "+position+" selected");
+		switch(position){
+		case 0:
+			showParseGPSFragment(new ParseDDCoordinatesFragment());
+			break;
+		case 1:
+			showParseGPSFragment(new ParseDMMCoordinatesFragment());
+			break;
+		case 2:
+			showParseGPSFragment(new ParseDMSCoordinatesFragment());
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// ignore
+
+	}
+
+	@Override
+	public void coordinatesChanged(Location l) {
+		this.location = l;
+		recalculateUTM();
 	}
 
 }

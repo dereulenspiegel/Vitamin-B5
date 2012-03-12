@@ -23,6 +23,9 @@ public class CoordinateUtils {
 	}
 
 	public static String locationToMGRS(Location location) {
+		if(location == null){
+			return null;
+		}
 		return latLonToMGRS(location.getLatitude(), location.getLongitude());
 	}
 
