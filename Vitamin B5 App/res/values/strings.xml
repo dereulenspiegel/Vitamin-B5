@@ -45,5 +45,6 @@
     <string name="yes">Ja</string>
     <string name="No">Nein</string>
     <string name="gps_format_prompt">Wähle ein Format</string>
+    <string name="not_in_utm_grid">Diese Koordinate befindet sich außerhalb des UTM-Gitters</string>
 
 </resources>

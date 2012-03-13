@@ -2,7 +2,6 @@ package de.akuz.android.utmumrechner.fragments.subfragments;
 
 import de.akuz.android.utmumrechner.utils.CoordinateUtils;
 import android.location.Location;
-import android.util.Log;
 
 public class ParseDDCoordinatesFragment extends
 		AbstractParseGPSCoordinatesFragment {

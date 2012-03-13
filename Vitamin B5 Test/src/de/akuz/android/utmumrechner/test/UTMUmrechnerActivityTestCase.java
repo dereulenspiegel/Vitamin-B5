@@ -25,10 +25,15 @@ public class UTMUmrechnerActivityTestCase extends
 	}
 
 	public void testSelectGPSFormat() throws Exception {
-		Spinner s = solo.getCurrentSpinners().get(0);
 		Assert.assertTrue(solo.isSpinnerTextSelected("Dezimalgrad"));
-		// Assert.assertEquals(solo.getString("Dezimalgrad", s.get)
-		// solo.pressSpinnerItem(0, 0);
+		solo.pressSpinnerItem(0, 1);
+		Assert.assertTrue(solo.isSpinnerTextSelected("Grad Dezimalminuten"));
+		solo.pressSpinnerItem(0, 2);
+		Assert.assertTrue(solo.isSpinnerTextSelected("Grad Minuten Sekunden"));
+	}
+	
+	public void testAdHocConversion() throws Exception {
+		String utmCoordinates = "";
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.akuz.android.utmumrechner.fragments;
 
+import uk.me.jstott.jcoord.NotDefinedOnUTMGridException;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
+import android.widget.Toast;
 import de.akuz.android.utmumrechner.R;
 import de.akuz.android.utmumrechner.fragments.subfragments.AbstractParseGPSCoordinatesFragment;
 import de.akuz.android.utmumrechner.fragments.subfragments.ParseDDCoordinatesFragment;
@@ -40,12 +42,10 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 	private BestLocationListenerWrapper locationWrapper;
 
 	private Location location;
-	
-	private AbstractParseGPSCoordinatesFragment currentParseGPSCoordinatesFragment;
-	
-	private FragmentManager fragmentManager;
 
-	private String utm;
+	private AbstractParseGPSCoordinatesFragment currentParseGPSCoordinatesFragment;
+
+	private FragmentManager fragmentManager;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -67,12 +67,13 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		gpsFormatSpinner.setAdapter(adapter);
 		gpsFormatSpinner.setOnItemSelectedListener(this);
-		
+
 		currentParseGPSCoordinatesFragment = new ParseDDCoordinatesFragment();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.add(R.id.gpsInputPlaceholder,currentParseGPSCoordinatesFragment);
+		transaction.add(R.id.gpsInputPlaceholder,
+				currentParseGPSCoordinatesFragment);
 		transaction.commit();
-		
+
 		useCurrentPosition = (CheckBox) findViewById(R.id.checkBoxUseCurrentPosition);
 
 		utmTextWatcher = new TextWatcher() {
@@ -80,8 +81,16 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				utm = editUTM.getText().toString();
-				recalculateGPS();
+				// TODO probably better do this in an background thread
+				try {
+					location = CoordinateUtils.mgrsToLocation(editUTM.getText()
+							.toString());
+					Log.d("UTM", "UTM text changed");
+					recalculateGPS();
+				} catch (IllegalArgumentException e) {
+					Log.w("UTM", "Conversion of UTM coordinate didn't succeed",
+							e);
+				}
 
 			}
 
@@ -103,15 +112,17 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 
 		useCurrentPosition.setOnCheckedChangeListener(this);
 	}
-	
-	private void showParseGPSFragment(AbstractParseGPSCoordinatesFragment fragment){
+
+	private void showParseGPSFragment(
+			AbstractParseGPSCoordinatesFragment fragment) {
 		currentParseGPSCoordinatesFragment.removeListener(this);
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.replace(R.id.gpsInputPlaceholder,fragment);
+		transaction.replace(R.id.gpsInputPlaceholder, fragment);
 		transaction.commit();
 		currentParseGPSCoordinatesFragment = fragment;
 		currentParseGPSCoordinatesFragment.updateFields(location);
-		currentParseGPSCoordinatesFragment.setEnabled(!useCurrentPosition.isChecked());
+		currentParseGPSCoordinatesFragment.setEnabled(!useCurrentPosition
+				.isChecked());
 		currentParseGPSCoordinatesFragment.addListener(this);
 	}
 
@@ -149,18 +160,24 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 
 	private void recalculateUTM() {
 		try {
-			utm =  CoordinateUtils.locationToMGRS(location);
+			String utm = CoordinateUtils.locationToMGRS(location);
 			editUTM.removeTextChangedListener(utmTextWatcher);
 			editUTM.setText(utm);
 			editUTM.addTextChangedListener(utmTextWatcher);
 		} catch (IllegalArgumentException e) {
 			Log.w("UTM", "Got no valid GPS Position", e);
+		} catch (NotDefinedOnUTMGridException e){
+			editUTM.removeTextChangedListener(utmTextWatcher);
+			editUTM.setText("");
+			editUTM.addTextChangedListener(utmTextWatcher);
+			Toast.makeText(getActivity(), R.string.not_in_utm_grid, Toast.LENGTH_LONG).show();
+			Log.w("UTM","This coordinates aren't defined on utm grid",e);
 		}
 	}
 
 	private void recalculateGPS() {
 		try {
-			location = CoordinateUtils.mgrsToLocation(utm);
+			Log.d("UTM", "Sending new coordinates to fragment");
 			currentParseGPSCoordinatesFragment.updateFields(location);
 		} catch (IllegalArgumentException e) {
 			Log.w("UTM", "UTM String is invalid", e);
@@ -199,7 +216,7 @@ public class ConvertCoordinatesFragment extends MyAbstractFragment implements
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		switch(position){
+		switch (position) {
 		case 0:
 			showParseGPSFragment(new ParseDDCoordinatesFragment());
 			break;

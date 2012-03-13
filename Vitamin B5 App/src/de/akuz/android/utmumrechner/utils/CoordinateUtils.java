@@ -31,7 +31,7 @@ public class CoordinateUtils {
 
 	public static Location mgrsToLocation(String mgrs) {
 		Location location = new Location(LOCATION_UTILS_PROVIDER);
-		MGRSRef mgrsRef = new MGRSRef(mgrs);
+		MGRSRef mgrsRef = new MGRSRef(mgrs.toUpperCase());
 		location.setLatitude(mgrsRef.toLatLng().getLatitude());
 		location.setLongitude(mgrsRef.toLatLng().getLongitude());
 		return location;
