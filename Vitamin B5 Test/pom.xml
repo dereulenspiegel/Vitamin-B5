@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.akuz.android</groupId>
+	<artifactId>vitamin-b5-test</artifactId>
+	<version>0.0.1</version>
+	<packaging>apk</packaging>
+	<name>Vitamin B5 test</name>
+
+	<parent>
+		<groupId>de.akuz.android</groupId>
+		<artifactId>vitamin-b5-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupdId>android</groupdId>
+			<artifactId>android</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>android</groupId>
+			<articatId>android-test</articatId>
+			<version>${android.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.akuz.android</groupId>
+			<artifactId>vitamin-b5-app</artifactId>
+			<type>apk</type>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.akuz.android</groupId>
+			<artifactId>vitamin-b5-app</artifactId>
+			<type>jar</type>
+			<scope>provided</scope>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+  			<groupId>com.actionbarsherlock</groupId>
+  			<artifactId>library</artifactId>
+  			<version>4.0.0</version>
+  			<scope>provided</scope>
+  			<type>apklib</type>
+		</dependency>
+		<dependency>
+			<groupId>de.akuz.android</groupId>
+			<artifactId>gesture-imageview</artifactId>
+			<version>0.0.1</version>
+			<type>apklib</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>uk.me.jstott</groupId>
+			<artifactId>jcoord</artifactId>
+			<version>1.1-b</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<configuration>
+					<sdk>
+						<path>${env.ANDROID_HOME}</path>
+						<platform>${android.platform}</platform>
+					</sdk>
+				</configuration>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

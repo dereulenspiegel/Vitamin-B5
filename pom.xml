@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.akuz.android</groupId>
+	<artifactId>vitamin-b5-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<name>Vitamin B5 (Parent)</name>
+	<description>TBD</description>
+	<url>http://blog.akuz.de</url>
+	<inceptionYear>2012</inceptionYear>
+
+	<modules>
+		<module>vitamin-b5-app</module>
+		<module>vitamin-b5-test</module>
+	</modules>
+
+	<scm>
+		<url>https://github.com/dereulenspiegel/Vitamin-B5/</url>
+		<connection>scm:git:git://github.com/dereulenspiegel/Vitamin-B5.git</connection>
+		<developerConnection>scm:git:git@github.com:dereulenspiegel/Vitamin-B5.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>Till Klocke</name>
+			<email>till.klocke@gmail.com</email>
+			<id>dereulenspiegel</id>
+			<url>http://blog.akuz.de</url>
+			<timezone>+2</timezone>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache License Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<distributionManagement>
+		<repository>
+			<id>personal-repository</id>
+			<name>some name</name>
+			<url>url to my repo/</url>
+		</repository>
+		<snapshotRepository>
+			<id>personal-repository</id>
+			<name>snapshot repo</name>
+			<url>url to snapshot repo</url>
+		</snapshotRepository>
+		<site>
+			<id>github-project-site</id>
+			<name>GitHub Project Pages</name>
+			<url>gitsite:git@github.com/dereulenspiegel/Vitamin-B5</url>
+			<!--
+			YOU MUST PUT THE FOLLOWING IN ~/.m2/settings.xml
+
+			<servers>
+				<server>
+					<id>github-project-site</id>
+					<username>git</username>
+				</server>
+			</servers> -->
+			
+		</site>
+	</distributionManagement> 
+
+	<organization>
+		<name>Till Klocke</name>
+		<url>http://blog.akuz.de</url>
+	</organization>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/dereulenspiegel/Vitamin-bB/issues</url>
+	</issueManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<apk.prefix>vitamin-b5</apk.prefix>
+
+		<java.version>1.6</java.version>
+		<android.version>4.0.1.2</android.version>
+		<android.platform>14</android.platform>
+		<android-support.version>r6</android-support.version>
+
+		<android-maven.version>3.1.1</android-maven.version>
+		<junit.version>4.10</junit.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>android</artifactId>
+				<version>${android.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>support-v4</artifactId>
+				<version>${android-support.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.8</version>
+				</plugin>
+
+				<plugin>
+					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+					<artifactId>android-maven-plugin</artifactId>
+					<version>${android-maven.version}</version>
+					<configuration>
+						<sdk>
+							<platform>${android.platform}</platform>
+						</sdk>
+						<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					</configuration>
+					<extensions>true</extensions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.8</version>
+					<configuration>
+						<failsOnError>true</failsOnError>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>2.1</version>
+				<inherited>false</inherited>
+				<configuration>
+					<generateProjectInfo>false</generateProjectInfo>
+					<generateReports>false</generateReports>
+					<siteDirectory>${basedir}/website</siteDirectory>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-ssh</artifactId>
+						<version>1.0-beta-7</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.scm</groupId>
+				<artifactId>maven-scm-provider-gitexe</artifactId>
+				<version>1.4</version>
+			</extension>
+			<extension>
+				<groupId>org.apache.maven.scm</groupId>
+				<artifactId>maven-scm-manager-plexus</artifactId>
+				<version>1.4</version>
+			</extension>
+			<extension>
+				<groupId>org.kathrynhuxtable.maven.wagon</groupId>
+				<artifactId>wagon-gitsite</artifactId>
+				<version>0.3.1</version>
+			</extension>
+		</extensions>
+	</build>
+</project>

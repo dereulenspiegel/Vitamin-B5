@@ -1,3 +1,3 @@
-[submodule "MapFragment"]
-	path = MapFragment
-	url = git@github.com:dereulenspiegel/Android-MapForgeFragment.git
+[submodule "MapsForge"]
+	path = MapsForge
+	url = file:///E:\\Projekte\\git-repos\\mapsforge-read-only\\.git
