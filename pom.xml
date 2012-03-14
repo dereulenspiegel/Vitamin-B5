@@ -16,6 +16,7 @@
 	<modules>
 		<module>vitamin-b5-app</module>
 		<module>vitamin-b5-test</module>
+		<module>gesture-imageview</module>
 	</modules>
 
 	<scm>

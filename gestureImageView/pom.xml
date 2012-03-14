@@ -6,6 +6,13 @@
 	<version>0.0.1</version>
 	<packaging>apklib</packaging>
 	<name>Gesture ImageView</name>
+	
+	<parent>
+		<groupId>de.akuz.android</groupId>
+		<artifactId>vitamin-b5-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
 	<dependencies>
 		<dependency>
