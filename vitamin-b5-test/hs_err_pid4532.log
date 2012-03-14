@@ -1,0 +1,93 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (classFileParser.cpp:3494), pid=4532, tid=8728
+#  Error: ShouldNotReachHere()
+#
+# JRE version: 6.0_30-b12
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (20.5-b03 mixed mode windows-amd64 compressed oops)
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000000000037d000):  JavaThread "Unknown thread" [_thread_in_vm, id=8728, stack(0x0000000002b10000,0x0000000002c10000)]
+
+Stack: [0x0000000002b10000,0x0000000002c10000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x000000000037d000 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=8728, stack(0x0000000002b10000,0x0000000002c10000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Dynamic libraries:
+0x0000000000400000 - 0x000000000042f000 	C:\Program Files\Java\jre6\bin\javaw.exe
+0x0000000077710000 - 0x00000000778b9000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00000000773a0000 - 0x00000000774bf000 	C:\Windows\system32\kernel32.dll
+0x000007fefded0000 - 0x000007fefdf3c000 	C:\Windows\system32\KERNELBASE.dll
+0x000007feff420000 - 0x000007feff4fb000 	C:\Windows\system32\ADVAPI32.dll
+0x000007feff0f0000 - 0x000007feff18f000 	C:\Windows\system32\msvcrt.dll
+0x000007feff500000 - 0x000007feff51f000 	C:\Windows\SYSTEM32\sechost.dll
+0x000007fefdfe0000 - 0x000007fefe10d000 	C:\Windows\system32\RPCRT4.dll
+0x00000000774c0000 - 0x00000000775ba000 	C:\Windows\system32\USER32.dll
+0x000007feff380000 - 0x000007feff3e7000 	C:\Windows\system32\GDI32.dll
+0x000007feff780000 - 0x000007feff78e000 	C:\Windows\system32\LPK.dll
+0x000007feff5a0000 - 0x000007feff669000 	C:\Windows\system32\USP10.dll
+0x000007feff3f0000 - 0x000007feff41e000 	C:\Windows\system32\IMM32.DLL
+0x000007feff670000 - 0x000007feff779000 	C:\Windows\system32\MSCTF.dll
+0x000007fefdb30000 - 0x000007fefdb6c000 	C:\Windows\system32\nvinitx.dll
+0x000000000f000000 - 0x000000000f006000 	C:\Program Files\NVIDIA Corporation\CoProcManager\_etoured.dll
+0x000007fef9dd0000 - 0x000007fef9e14000 	C:\Program Files\NVIDIA Corporation\CoProcManager\nvd3d9wrapx.dll
+0x000007feff1a0000 - 0x000007feff377000 	C:\Windows\system32\SETUPAPI.dll
+0x000007fefdcc0000 - 0x000007fefdcf6000 	C:\Windows\system32\CFGMGR32.dll
+0x000007fefef70000 - 0x000007feff047000 	C:\Windows\system32\OLEAUT32.dll
+0x000007feff790000 - 0x000007feff993000 	C:\Windows\system32\ole32.dll
+0x000007fefdeb0000 - 0x000007fefdeca000 	C:\Windows\system32\DEVOBJ.dll
+0x000007fef9d10000 - 0x000007fef9d52000 	C:\Program Files\NVIDIA Corporation\CoProcManager\nvdxgiwrapx.dll
+0x0000000180000000 - 0x0000000180006000 	C:\PROGRA~2\KASPER~1\KASPER~1.0FO\x64\kloehk.dll
+0x0000000000310000 - 0x0000000000329000 	C:\PROGRA~2\KASPER~1\KASPER~1.0FO\x64\adialhk.dll
+0x000007feff9a0000 - 0x000007feffa11000 	C:\Windows\system32\SHLWAPI.dll
+0x000000006d800000 - 0x000000006dfb8000 	C:\Program Files\Java\jre6\bin\server\jvm.dll
+0x000007fefbc00000 - 0x000007fefbc3b000 	C:\Windows\system32\WINMM.dll
+0x000000006d770000 - 0x000000006d77e000 	C:\Program Files\Java\jre6\bin\verify.dll
+0x000000006d3b0000 - 0x000000006d3d7000 	C:\Program Files\Java\jre6\bin\java.dll
+0x000000006d7c0000 - 0x000000006d7d2000 	C:\Program Files\Java\jre6\bin\zip.dll
+0x00000000778d0000 - 0x00000000778d7000 	C:\Windows\system32\PSAPI.DLL
+
+VM Arguments:
+jvm_args: -Dfile.encoding=Cp1252 -Xbootclasspath:E:\Projekte\Android DSL\Android SDK\platforms\android-7\android.jar;E:\Projekte\Android DSL\Android SDK\add-ons\addon_google_apis_google_inc_7\libs\maps.jar 
+java_command: org.eclipse.jdt.internal.junit.runner.RemoteTestRunner -version 3 -port 51920 -testLoaderClass org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader -loaderpluginname org.eclipse.jdt.junit4.runtime -classNames de.akuz.android.utmumrechner.utils.CoordinateUtilsTestCase
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.6.0_30
+PATH=C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\WIDCOMM\Bluetooth Software\;C:\Program Files\WIDCOMM\Bluetooth Software\syswow64;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Intel\DMIX;C:\Program Files (x86)\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files (x86)\Intel\Services\IPT\;C:\Program Files\Dell\Dell Data Protection\Access\Advanced\Wave\Gemalto\Access Client\v5\;C:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\OEM\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\OEM\12.0\DLLShared\;C:\Program Files (x86)\Roxio\OEM\AudioCore\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\Program Files\TortoiseHg\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\Calibre2\;E:\Projekte\Androi~1\Androi~1\tools;E:\Projekte\Androi~1\Androi~1\platform-tools;C:\Program Files (x86)\OpenVPN\bin;E:\Projekte\apache-maven-3.0.4\bin
+USERNAME=klocke
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 , 64 bit Build 7601 Service Pack 1
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht
+
+Memory: 4k page, physical 8266648k(4800120k free), swap 16531448k(11781232k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (20.5-b03) for windows-amd64 JRE (1.6.0_30-b12), built on Nov 10 2011 01:49:46 by "java_re" with MS VC++ 8.0 (VS2005)
+
+time: Mon Mar 12 09:28:45 2012
+elapsed time: 0 seconds
+

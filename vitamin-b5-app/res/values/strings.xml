@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, UTMUmrechnerActivity!</string>
+    <string name="app_name">Vitamin B5</string>
+    <string name="utm_coordinates">UTM Koordinaten</string>
+    <string name="precision">Genauigkeit</string>
+    <string name="use_current_position">Aktuelle Position benutzen</string>
+    <string name="latitude">Breite</string>
+    <string name="longtitude">Länge</string>
+    <string name="utm_coordinate_1">UTM Koordinate 1</string>
+    <string name="utm_coordinate_2">UTM Koordinate 2</string>
+    <string name="distance">Distanz</string>
+    <string name="action_menu_convert">Umrechnen</string>
+    <string name="action_menu_distance">Distanz</string>
+    <string name="name">Name</string>
+    <string name="utm">UTM</string>
+    <string name="list_locations">Orte anzeigen</string>
+    <string name="current_position">Aktuelle Position</string>
+    <string name="satellite_count">Anzahl Satelliten</string>
+    <string name="add_location">Ort hinzufügen</string>
+    <string name="take_picture">Foto aufnehmen</string>
+    <string name="save">Speichern</string>
+    <string name="description">Beschreibung</string>
+    <string name="error_please_provide_all_info">Bitte fülle alle Felder aus</string>
+    <string name="error_coordinate_required">Zum Aufnehmen eines Ortes muss der Ort bestimmt werden</string>
+    <string name="delete_marked_locations">Markierte Orte löschen</string>
+    <string name="action_item_remove_marked_locations">Markierte Orte löschen</string>
+    <string name="menu_location_utils">Helfer</string>
+    <string name="menu_locations">Orte</string>
+    <string name="submenu_edit">Bearbeiten</string>
+    <string name="menu_share_locations">Markierte Orte teilen</string>
+    <string name="choose_sending_intent">Versenden mit...</string>
+    <string name="progress_dialog_exporting_entries">Exportiere...</string>
+    <string name="you_are_here">Du befindest dich gerade an</string>
+    <string name="accuracy">Abweichung +/-</string>
+    <plurals name="you_have_in_db">
+        <item quantity="one">Du hast einen Ort gespeichert</item>
+        <item quantity="zero">Du hast keinen Ort gespeichert</item>
+        <item quantity="other">Du hast %1$s Orte gespeichert</item>
+    </plurals>
+    <string name="sub_menu_location_detail">Ort...</string>
+    <string name="show_on_map">... auf Karte zeigen</string>
+    <string name="really_delete_locations">Die ausgewählten Orte wirklich löschen?</string>
+    <string name="yes">Ja</string>
+    <string name="No">Nein</string>
+    <string name="gps_format_prompt">Wähle ein Format</string>
+    <string name="not_in_utm_grid">Diese Koordinate befindet sich außerhalb des UTM-Gitters</string>
+
+</resources>
