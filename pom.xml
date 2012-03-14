@@ -12,11 +12,23 @@
 	<description>TBD</description>
 	<url>http://blog.akuz.de</url>
 	<inceptionYear>2012</inceptionYear>
+	
+	<repositories>
+		<repository>
+			<id>actionbarsherlock</id>
+			<name>ActionBarSherlock repository</name>
+			<layout>default</layout>
+			<url>http://r.jakewharton.com/maven/release/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<modules>
-		<module>Vitamin B5 App</module>
-		<module>Vitamin B5 Test</module>
-		<module>gestureImageView</module>
+		<module>vitamin-b5-app</module>
+		<module>vitamin-b5-test</module>
+		<module>gesture-imageview</module>
 	</modules>
 
 	<scm>

@@ -5,7 +5,7 @@
 	<artifactId>vitamin-b5-test</artifactId>
 	<version>0.0.1</version>
 	<packaging>apk</packaging>
-	<name>Vitamin B5 test</name>
+	<name>Vitamin B5 Test</name>
 
 	<parent>
 		<groupId>de.akuz.android</groupId>
@@ -16,12 +16,13 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>android</groupId>
+			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
+			<version>${android.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>android</groupId>
+			<groupId>com.google.android</groupId>
 			<artifactId>android-test</artifactId>
 			<version>${android.version}</version>
 			<scope>provided</scope>
@@ -30,7 +31,13 @@
 			<groupId>de.akuz.android</groupId>
 			<artifactId>vitamin-b5-app</artifactId>
 			<type>apk</type>
+			<scope>provided</scope>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.android.robotium</groupId>
+			<artifactId>robotium-solo</artifactId>
+			<version>3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>de.akuz.android</groupId>

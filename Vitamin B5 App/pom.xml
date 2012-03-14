@@ -7,18 +7,6 @@
 	<packaging>apk</packaging>
 	<name>Vitamin B5</name>
 	
-	<repositories>
-		<repository>
-			<id>actionbarsherlock</id>
-			<name>ActionBarSherlock repository</name>
-			<layout>default</layout>
-			<url>http://r.jakewharton.com/maven/release/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	
 	<parent>
 		<groupId>de.akuz.android</groupId>
 		<artifactId>vitamin-b5-parent</artifactId>
