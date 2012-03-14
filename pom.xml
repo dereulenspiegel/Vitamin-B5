@@ -14,9 +14,9 @@
 	<inceptionYear>2012</inceptionYear>
 
 	<modules>
-		<module>vitamin-b5-app</module>
-		<module>vitamin-b5-test</module>
-		<module>gesture-imageview</module>
+		<module>Vitamin B5 App</module>
+		<module>Vitamin B5 test</module>
+		<module>gestureImageView</module>
 	</modules>
 
 	<scm>
