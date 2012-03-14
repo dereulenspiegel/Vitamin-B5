@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="gps_formats">
-        <item>Dezimalgrad</item>
-        <item>Grad Dezimalminuten</item>
-        <item>Grad Minuten Sekunden</item>
-    </string-array>
-    
-</resources>
