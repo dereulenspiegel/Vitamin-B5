@@ -15,7 +15,7 @@
 
 	<modules>
 		<module>Vitamin B5 App</module>
-		<module>Vitamin B5 test</module>
+		<module>Vitamin B5 Test</module>
 		<module>gestureImageView</module>
 	</modules>
 
