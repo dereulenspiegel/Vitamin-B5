@@ -16,13 +16,13 @@
 
 	<dependencies>
 		<dependency>
-			<groupdId>android</groupdId>
+			<groupId>android</groupId>
 			<artifactId>android</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>android</groupId>
-			<articatId>android-test</articatId>
+			<artifactId>android-test</artifactId>
 			<version>${android.version}</version>
 			<scope>provided</scope>
 		</dependency>
