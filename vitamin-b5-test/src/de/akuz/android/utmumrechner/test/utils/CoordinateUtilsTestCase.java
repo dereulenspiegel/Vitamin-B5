@@ -2,8 +2,6 @@ package de.akuz.android.utmumrechner.test.utils;
 
 import junit.framework.Assert;
 
-import org.junit.Test;
-
 import de.akuz.android.utmumrechner.utils.CoordinateUtils;
 
 import android.location.Location;
@@ -20,7 +18,6 @@ public class CoordinateUtilsTestCase extends AndroidTestCase {
 	private final static String latitudeDMM = "51 27.55";
 	private final static String longitudeDMM = "7 35.36666666666667";
 
-	@Test
 	public void testParseDMS() throws Exception {
 		Location l = CoordinateUtils.parseDMS(latitudeDMS, longitudeDMS);
 		Assert.assertEquals("Latitude does not match", latitudeDecimal,
@@ -30,7 +27,6 @@ public class CoordinateUtilsTestCase extends AndroidTestCase {
 
 	}
 
-	@Test
 	public void testParseDM() throws Exception {
 		Location l = CoordinateUtils.parseDMM(latitudeDMM, longitudeDMM);
 		Assert.assertEquals("Latitude does not match", latitudeDecimal,

@@ -16,9 +16,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>android</groupId>
+			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-			<version>4.0_r3</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -47,22 +46,9 @@
 					<sdk>
 						<platform>14</platform>
 					</sdk>
-					<emulator>
-						<avd>16</avd>
-					</emulator>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.google.android</groupId>
-				<artifactId>android</artifactId>
-				<version>2.3.3_r2</version>
-				<scope>provided</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>

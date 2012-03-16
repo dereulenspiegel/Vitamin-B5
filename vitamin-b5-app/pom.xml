@@ -14,29 +14,34 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
+	<properties>
+		<environment>development</environment>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
   			<groupId>com.actionbarsherlock</groupId>
   			<artifactId>library</artifactId>
-  			<version>4.0.0</version>
   			<type>apklib</type>
 		</dependency>
+		
 		<dependency>
 			<groupId>de.akuz.android</groupId>
 			<artifactId>gesture-imageview</artifactId>
-			<version>0.0.1</version>
 			<type>apklib</type>
 		</dependency>
+		
 		<dependency>
 			<groupId>uk.me.jstott</groupId>
 			<artifactId>jcoord</artifactId>
-			<version>1.1-b</version>
 			<type>jar</type>
+			<classifier>b</classifier>
 		</dependency>
 	</dependencies>
 	
@@ -48,7 +53,28 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-               <extensions>true</extensions>
+                <extensions>true</extensions>
+				<configuration>
+					<manifest>
+						<debuggable>true</debuggable>
+					</manifest>
+				</configuration>
+				<executions>
+					<execution>
+						<id>manifestUpdate</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>manifest-update</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>alignApk</id>
+						<phase>package</phase>
+						<goals>
+							<goal>zipalign</goal>
+						</goals>
+					</execution>
+				</executions>
             </plugin>
         </plugins>
     </build>

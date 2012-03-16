@@ -4,16 +4,18 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="14"/>
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="14" />
 
-    <instrumentation android:name="pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
-                     android:targetPackage="de.akuz.android.utmumrechner"
-                     android:label="Tests for Vitamin B5"/>
+    <instrumentation
+        android:name="pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
+        android:label="Tests for Vitamin B5"
+        android:targetPackage="de.akuz.android.utmumrechner" />
+    <!-- <instrumentation android:name="android.test.InstrumentationTestRunner" android:targetPackage="de.akuz.android.utmumrechner"></instrumentation> -->
 
-    <application >
-        <uses-library android:name="android.test.runner"/>
+    <application>
+        <uses-library android:name="android.test.runner" />
     </application>
-
-    
 
 </manifest>

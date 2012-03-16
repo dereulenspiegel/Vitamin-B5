@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.akuz.android</groupId>
 	<artifactId>vitamin-b5-test</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>apk</packaging>
 	<name>Vitamin B5 Test</name>
 
@@ -18,27 +18,27 @@
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-			<version>${android.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android-test</artifactId>
-			<version>${android.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>de.akuz.android</groupId>
 			<artifactId>vitamin-b5-app</artifactId>
 			<type>apk</type>
-			<scope>provided</scope>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.jayway.android.robotium</groupId>
 			<artifactId>robotium-solo</artifactId>
-			<version>3.1</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>de.akuz.android</groupId>
 			<artifactId>vitamin-b5-app</artifactId>
@@ -46,24 +46,25 @@
 			<scope>provided</scope>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
 		<dependency>
-  			<groupId>com.actionbarsherlock</groupId>
-  			<artifactId>library</artifactId>
-  			<version>4.0.0</version>
-  			<scope>provided</scope>
-  			<type>apklib</type>
+			<groupId>com.actionbarsherlock</groupId>
+			<artifactId>library</artifactId>
+			<scope>provided</scope>
+			<type>apklib</type>
 		</dependency>
+		
 		<dependency>
 			<groupId>de.akuz.android</groupId>
 			<artifactId>gesture-imageview</artifactId>
-			<version>0.0.1</version>
 			<type>apklib</type>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>uk.me.jstott</groupId>
 			<artifactId>jcoord</artifactId>
-			<version>1.1-b</version>
+			<classifier>b</classifier>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -88,6 +89,16 @@
 						<path>${env.ANDROID_HOME}</path>
 						<platform>${android.platform}</platform>
 					</sdk>
+					<test>
+						<!-- <instrumentationPackage>de.akuz.android.utmumrechner.test</instrumentationPackage>
+						<instrumentationRunner>pl.polidea.instrumentation.PolideaInstrumentationTestRunner</instrumentationRunner> -->
+						<debug>true</debug>
+						<coverage>false</coverage>
+						<createReport>true</createReport>
+						<!-- <packages>
+							<package>de.akuz.android.utmumrechner.test</package>
+						</packages> -->
+					</test>
 				</configuration>
 				<extensions>true</extensions>
 			</plugin>

@@ -6,7 +6,6 @@ import com.jayway.android.robotium.solo.Solo;
 
 import de.akuz.android.utmumrechner.UTMUmrechnerActivity;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Spinner;
 
 public class UTMUmrechnerActivityTestCase extends
 		ActivityInstrumentationTestCase2<UTMUmrechnerActivity> {
@@ -38,10 +37,10 @@ public class UTMUmrechnerActivityTestCase extends
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		if (solo != null) {
-			solo.finishOpenedActivities();
+//			solo.finishOpenedActivities();
 		}
+		super.tearDown();
 	}
 
 }
