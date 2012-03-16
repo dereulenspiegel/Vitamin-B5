@@ -90,14 +90,10 @@
 						<platform>${android.platform}</platform>
 					</sdk>
 					<test>
-						<!-- <instrumentationPackage>de.akuz.android.utmumrechner.test</instrumentationPackage>
-						<instrumentationRunner>pl.polidea.instrumentation.PolideaInstrumentationTestRunner</instrumentationRunner> -->
-						<debug>true</debug>
-						<coverage>false</coverage>
+						<!-- <instrumentationPackage>de.akuz.android.utmumrechner.test</instrumentationPackage> -->
+						<!-- <instrumentationRunner>pl.polidea.instrumentation.PolideaInstrumentationTestRunner</instrumentationRunner> -->
+						<coverage>true</coverage>
 						<createReport>true</createReport>
-						<!-- <packages>
-							<package>de.akuz.android.utmumrechner.test</package>
-						</packages> -->
 					</test>
 				</configuration>
 				<extensions>true</extensions>
